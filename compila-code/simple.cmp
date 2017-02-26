@@ -2,5 +2,10 @@ program DummyProgram
 begin
   class TestClass begin end;
   class TestClass2 begin end;
+
+  "parsed string"
+  0
+  1
+  3.14
 end;
 

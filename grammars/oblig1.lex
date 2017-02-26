@@ -20,19 +20,58 @@ import java_cup.runtime.*;
 
 %}
 LineTerminator = \r|\n|\r\n
+NonLineTerminator = [^\r\n]
 WhiteSpace = {LineTerminator} | [ \t\f]
+Comment = "//" {NonLineTerminator}* {LineTerminator}?
 Identifier = [:jletter:] [:jletterdigit:]*
+
+DecIntegerLiteral = 0 | [1-9][0-9]*
+FloatLiteral = {DecIntegerLiteral} \. {DecIntegerLiteral}
+
+SpecialCharacter = \n | \r | \f | \t
+
+%state STRING
+
 %%
 <YYINITIAL>{
         {WhiteSpace}                    {}
+
+        /* keywords */
         "program"                       { return symbol(sym.PROGRAM); }
         "class"                         { return symbol(sym.CLASS); }
         "begin"                         { return symbol(sym.BEGIN); }
         "end"                           { return symbol(sym.END); }
+        "var"                           { return symbol(sym.VAR); }
+        "proc"                          { return symbol(sym.PROCEDURE); }
+        "return"                        { return symbol(sym.RETURN); }
+
+        /* types */
+        "return"                        { return symbol(sym.RETURN); }
+
+        /* symbols */
         "("                             { return symbol(sym.LPAR); }
         ")"                             { return symbol(sym.RPAR); }
         ";"                             { return symbol(sym.SEMI); }
+        ":"                             { return symbol(sym.COLON); }
+
+        /* identifiers */
         {Identifier}                    { return symbol(sym.ID,yytext()); }
+
+        /* literals */
+        \"                              { string.setLength(0); yybegin(STRING); }
+        {FloatLiteral}                  { return symbol(sym.FLOAT_LITERAL); }
+        {DecIntegerLiteral}             { return symbol(sym.INT_LITERAL); }
+}
+
+<STRING> {
+        \"                             { yybegin(YYINITIAL); return symbol(sym.STRING_LITERAL, string.toString()); }
+
+        [^\n\r\f\t\"\\]+               { string.append( yytext() ); }
+
+        \\\"                           { string.append('\"'); }
+        \\                             { string.append('\\'); }
+
+        {SpecialCharacter}             { throw new Error("Illegal character '" + yytext() + "' in string literal at line " + yyline + ", column " + yycolumn + "."); }
 }
 
 .                           { throw new Error("Illegal character '" + yytext() + "' at line " + yyline + ", column " + yycolumn + "."); }
