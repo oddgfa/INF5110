@@ -54,6 +54,23 @@ SpecialCharacter = \n | \r | \f | \t
         ";"                             { return symbol(sym.SEMI); }
         ":"                             { return symbol(sym.COLON); }
 
+        "&&"                            { return symbol(sym.LOG_AND); }
+        "||"                            { return symbol(sym.LOG_OR); }
+
+        "<"                             { return symbol(sym.REL_LT); }
+        "<="                            { return symbol(sym.REL_LTE); }
+        ">"                             { return symbol(sym.REL_GT); }
+        ">="                            { return symbol(sym.REL_GTE); }
+        "="                             { return symbol(sym.REL_EQ); }
+        "<>"                            { return symbol(sym.REL_NEQ); }
+
+        "+"                             { return symbol(sym.ARIT_PLUS); }
+        "-"                             { return symbol(sym.ARIT_MINUS); }
+        "*"                             { return symbol(sym.ARIT_MUL); }
+        "/"                             { return symbol(sym.ARIT_DIV); }
+        "#"                             { return symbol(sym.ARIT_POW); }
+
+
         /* identifiers */
         {Identifier}                    { return symbol(sym.ID,yytext()); }
 

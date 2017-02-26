@@ -11,7 +11,10 @@ parser code {:
 terminal                        PROGRAM, CLASS;
 terminal                        BEGIN, END;
 terminal                        LPAR, RPAR;
-terminal                        SEMI, RETURN;
+terminal                        LOG_AND, LOG_OR;
+terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
+terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
+terminal                        SEMI, COLON, RETURN;
 terminal                        PROCEDURE;
 terminal String                 ID;
 terminal String                 STRING_LITERAL;
