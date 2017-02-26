@@ -10,16 +10,25 @@ parser code {:
 /* Terminals */
 terminal                        PROGRAM, CLASS;
 terminal                        BEGIN, END;
+terminal                        IF, THEN, ELSE;
+terminal                        WHILE, DO;
 terminal                        LPAR, RPAR;
 terminal                        LOG_AND, LOG_OR;
 terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
 terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
+terminal                        DOT, COMMA;
+terminal                        TYPE_FLOAT, TYPE_INT, TYPE_STRING, TYPE_BOOL;
+terminal                        ASSIGN;
 terminal                        SEMI, COLON, RETURN;
 terminal                        PROCEDURE;
+terminal                        VAR;
+terminal                        REF, DEREF;
 terminal String                 ID;
 terminal String                 STRING_LITERAL;
-terminal Integer                INT_LITERAL;
-terminal Float                  FLOAT_LITERAL;
+terminal int                    INT_LITERAL;
+terminal float                  FLOAT_LITERAL;
+terminal boolean                TRUE, FALSE;
+terminal                        NULL;
 
 /* Non terminals */
 non terminal Program            program;

@@ -44,15 +44,29 @@ SpecialCharacter = \n | \r | \f | \t
         "var"                           { return symbol(sym.VAR); }
         "proc"                          { return symbol(sym.PROCEDURE); }
         "return"                        { return symbol(sym.RETURN); }
+        "ref"                           { return symbol(sym.REF); }
+        "deref"                         { return symbol(sym.DEREF); }
+        "if"                            { return symbol(sym.IF); }
+        "then"                          { return symbol(sym.THEN); }
+        "else"                          { return symbol(sym.ELSE); }
+        "while"                         { return symbol(sym.WHILE); }
+        "do"                            { return symbol(sym.DO); }
 
         /* types */
-        "return"                        { return symbol(sym.RETURN); }
+        "float"                         { return symbol(sym.TYPE_FLOAT); }
+        "int"                           { return symbol(sym.TYPE_INT); }
+        "string"                        { return symbol(sym.TYPE_STRING); }
+        "bool"                          { return symbol(sym.TYPE_BOOL); }
 
         /* symbols */
         "("                             { return symbol(sym.LPAR); }
         ")"                             { return symbol(sym.RPAR); }
         ";"                             { return symbol(sym.SEMI); }
         ":"                             { return symbol(sym.COLON); }
+        "."                             { return symbol(sym.DOT); }
+        ","                             { return symbol(sym.COMMA); }
+
+        ":="                            { return symbol(sym.ASSIGN); }
 
         "&&"                            { return symbol(sym.LOG_AND); }
         "||"                            { return symbol(sym.LOG_OR); }
@@ -76,8 +90,11 @@ SpecialCharacter = \n | \r | \f | \t
 
         /* literals */
         \"                              { string.setLength(0); yybegin(STRING); }
-        {FloatLiteral}                  { return symbol(sym.FLOAT_LITERAL); }
-        {DecIntegerLiteral}             { return symbol(sym.INT_LITERAL); }
+        {FloatLiteral}                  { return symbol(sym.FLOAT_LITERAL); } // todo: pass value
+        {DecIntegerLiteral}             { return symbol(sym.INT_LITERAL); } // todo: pass value
+        "true"                          { return symbol(sym.TRUE); } // todo: merge with false and create BOOL token with value?
+        "false"                         { return symbol(sym.FALSE); }
+        "null"                          { return symbol(sym.NULL); }
 }
 
 <STRING> {
