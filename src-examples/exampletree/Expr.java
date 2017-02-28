@@ -1,4 +1,6 @@
 package exampletree;
 
-public abstract class Expr {
+import syntaxtree.PrintAst;
+
+public abstract class Expr implements PrintAst {
 }

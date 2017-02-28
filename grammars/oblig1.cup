@@ -1,6 +1,7 @@
 package oblig1parser;
 import java_cup.runtime.*;
 import syntaxtree.*;
+import syntaxtree.decl.*;
 import java.util.*;
 
 parser code {:
@@ -32,8 +33,12 @@ terminal                        NULL;
 
 /* Non terminals */
 non terminal Program            program;
-non terminal List<ClassDecl>    decl_list;
-non terminal ClassDecl          class_decl, decl;
+non terminal List<Decl>         decl_list;
+non terminal List<VarDecl>      var_list;
+non terminal Decl               decl;
+non terminal ClassDecl          class_decl;
+non terminal VarDecl            var_decl;
+non terminal Type               type;
 
 
 /* The grammar */
@@ -41,16 +46,23 @@ program         ::= PROGRAM ID:name BEGIN decl_list:dl END SEMI
                         {: RESULT = new Program(name, dl); :} 
                   ;
 
-decl_list       ::= decl:d SEMI {: List<ClassDecl> l = new LinkedList<ClassDecl>();
-                                      l.add(d);
-                                      RESULT = l; :} 
-                        |   decl_list:dl decl:d SEMI
-                            {: dl.add(d); RESULT = dl; :};
+decl_list       ::= decl:d SEMI {: List<Decl> l = new LinkedList<Decl>(); l.add(d); RESULT = l; :}
+                |   decl_list:dl decl:d SEMI {: dl.add(d); RESULT = dl; :};
 
 decl            ::= class_decl:sd {: RESULT = sd; :}
+                |   var_decl:vd {: RESULT = vd; :}
                                   ;
                                   
-class_decl      ::= CLASS ID:name BEGIN END
-                        {: RESULT = new ClassDecl(name); :}
-                  ;
+class_decl      ::= CLASS ID:name BEGIN var_list:vl END
+                        {: RESULT = new ClassDecl(name, vl); :}
+                | CLASS ID:name BEGIN END
+                        {: RESULT = new ClassDecl(name); :};
+
+var_list        ::= var_decl:v SEMI {: List<VarDecl> l = new LinkedList<VarDecl>(); l.add(v); RESULT = l; :}
+                | var_list:l var_decl:v SEMI {: l.add(v); RESULT = l; :};
+
+var_decl        ::= VAR ID:name COLON type:t {: RESULT = new VarDecl(name, t); :};
+
+type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :} | TYPE_INT {: RESULT = new Type("int"); :} | TYPE_STRING {: RESULT = new Type("string"); :} | TYPE_BOOL {: RESULT = new Type("bool"); :};
+
 

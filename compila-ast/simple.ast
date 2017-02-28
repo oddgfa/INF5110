@@ -1,4 +1,5 @@
 (PROGRAM (NAME DummyProgram)
-	(CLASS_DECL (NAME TestClass))
+	(CLASS_DECL (NAME TestClass)
+	(VAR_DECL (TYPE float) (NAME Real)))
 	(CLASS_DECL (NAME TestClass2))
 )
