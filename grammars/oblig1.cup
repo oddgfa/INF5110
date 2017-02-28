@@ -25,9 +25,9 @@ terminal                        VAR;
 terminal                        REF, DEREF;
 terminal String                 ID;
 terminal String                 STRING_LITERAL;
-terminal int                    INT_LITERAL;
-terminal float                  FLOAT_LITERAL;
-terminal boolean                TRUE, FALSE;
+terminal Integer                INT_LITERAL;
+terminal Float                  FLOAT_LITERAL;
+terminal Boolean                BOOL;
 terminal                        NULL;
 
 /* Non terminals */

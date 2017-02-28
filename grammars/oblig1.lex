@@ -90,10 +90,10 @@ SpecialCharacter = \n | \r | \f | \t
 
         /* literals */
         \"                              { string.setLength(0); yybegin(STRING); }
-        {FloatLiteral}                  { return symbol(sym.FLOAT_LITERAL); } // todo: pass value
-        {DecIntegerLiteral}             { return symbol(sym.INT_LITERAL); } // todo: pass value
-        "true"                          { return symbol(sym.TRUE); } // todo: merge with false and create BOOL token with value?
-        "false"                         { return symbol(sym.FALSE); }
+        {FloatLiteral}                  { return symbol(sym.FLOAT_LITERAL, new Float(yytext())); }
+        {DecIntegerLiteral}             { return symbol(sym.INT_LITERAL, new Integer(yytext())); }
+        "true"                          { return symbol(sym.BOOL, new Boolean(true)); }
+        "false"                         { return symbol(sym.BOOL, new Boolean(false)); }
         "null"                          { return symbol(sym.NULL); }
 }
 
