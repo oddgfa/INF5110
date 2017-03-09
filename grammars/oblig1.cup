@@ -7,95 +7,82 @@ import java.util.*;
 parser code {:
 
 :};
-
-/* Terminals */
-terminal                        PROGRAM;
-terminal						CLASS;
-terminal						NEW;
-terminal                        BEGIN;
-terminal						END;
-terminal                        IF;
-terminal						THEN;
-terminal						ELSE;
-terminal                        WHILE;
-terminal						DO;
-terminal                        PROCEDURE;
-terminal                        VAR;
-terminal                        REF;
-terminal						DEREF;
-terminal						TRUE;
-terminal						FALSE;
-terminal                        NULL;
-
-
-
-/*symbols*/
-terminal                        LPAR;
-terminal						RPAR;
+/* operators*/
+terminal						NOT
+terminal                        LOG_AND, LOG_OR;
+terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
+terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
 terminal                        DOT;
+terminal						EQUAL;
+
+terminal                        PROGRAM, CLASS;
+terminal                        BEGIN, END;
+terminal                        IF, THEN, ELSE;
+terminal                        WHILE, DO;
+terminal                        LPAR, RPAR;
 terminal						COMMA;
+terminal                        ASSIGN;
 terminal                        SEMI;
 terminal						COLON;
 terminal						RETURN;
-
-/*operators/*
-terminal Boolean                BOOL;
-terminal						EQUAL;
-terminal                        LOG_AND;
-terminal						LOG_OR;
-terminal						NOT;
-terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
-terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
-
-terminal                        TYPE_FLOAT, TYPE_INT, TYPE_STRING, TYPE_BOOL;
-terminal                        ASSIGN;
-
+terminal                        PROCEDURE;
+terminal                        VAR;
+terminal                        REF, DEREF;
 terminal String                 ID;
+terminal 			            BOOL;
+terminal						INT;
+terminal						STRING;
+terminal						FLOAT;
+terminal                        NULL;
+terminal						TRUE;
+terminal						FALSE;
+terminal						NEW;
+terminal						REF;
+terminal						DEREF;
 
 /*literals*/
+terminal Float                  FLOAT_LITERAL;
 terminal String                 STRING_LITERAL;
 terminal Integer                INT_LITERAL;
-terminal Float                  FLOAT_LITERAL;
-
-/* Precedences */
-precedence left AND;
-precedence left OR;
-precedence left	TIMES;
-precedence left ASTERISK;
-precedence left SLASH;
-precedence left MODULUS;
-precedence left NOT;
-precedence left LESS_THAN, LESS_THAN_EQUAL, GREATER_THAN, GREATER_THAN_EQUAL;
-precedence right EQUALS, PLUS_EQUALS, MINUS_EQUALS
-precedence left PLUS, MINUS;
 
 /* Non terminals */
-non terminal Program            		program;
+non terminal Program            	program;
 
-non terminal Decl               		decl;
-non terminal List<Decl>         		decl_list;
+/*Declarations
+non terminal Decl               	decl;
+non terminal ProcedureDecl			proc_decl;
+non terminal ClassDecl          	class_decl;
+non terminal VariableDecl           var_decl;
+non terminal ParameterDecl			param_decl;
+non terminal List<Decl>         	decl_list;
 
-non terminal Variable					var;
-non terminal VarDecl            		var_decl;
-non terminal List<VarDecl>      		var_list;
+/*Expression*/
+non terminal Exp					exp;
+non terminal Log_Op_Exp				log_op_exp;
+non terminal Arit_Op_Exp			arit_op_exp;
+non terminal Rel_Op_Exp				rel_op_exp;
+non terminal Name					name;
 
-non terminal ClassDecl          		class_decl;
-non terminal ProcedureDecl				proc_decl;
+non terminal Literal				literal;
+non terminal Type               	type;
 
-non terminal Type               		type;
+/*statement*/
+non terminal AssignStmt				assign_stmt
+non terminal Statement				stmt;
+non terminal IfStmt					if_stmt;
+non terminal WhileStmt				while_stmt;
+non terminal ReturnStatement		return_stmt;
+non terminal CallStmt				call_stmt;
 
-non terminal Parameter					param;
-non terminal ParameterDecl				param_decl;
-non terminal List<Parameter>			param_list
-
-non terminal Statement					stmt;
-non terminal AssignmentStatement		assign_stmt;
-non terminal WhileStatement				while_stmt;
-non terminal IfStatement				if_stmt;
-
-non terminal ArithmeticOpExpression		arit_op_exp;
-non terminal RelationalOpExpression		rel_op_exp;
-
+/*Precedence*/
+precedence left LOG_OR;
+precedence left LOG_AND;
+precedence right NOT;
+precedence left REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
+precedence left ARIT_PLUS, ARIT_MINUS;
+precedence left ARIT_MUL, ARIT_DIV;
+precedence right ARIT_POW;
+precedence left DOT;
 
 
 /* The grammar */
