@@ -52,6 +52,11 @@ SpecialCharacter = \n | \r | \f | \t
         "while"                         { return symbol(sym.WHILE); }
         "do"                            { return symbol(sym.DO); }
 
+        /* constants */
+        "true"                          { return symbol(sym.BOOL, new Boolean(true)); }
+        "false"                         { return symbol(sym.BOOL, new Boolean(false)); }
+        "null"                          { return symbol(sym.NULL); }
+
         /* types */
         "float"                         { return symbol(sym.TYPE_FLOAT); }
         "int"                           { return symbol(sym.TYPE_INT); }
@@ -92,9 +97,6 @@ SpecialCharacter = \n | \r | \f | \t
         \"                              { string.setLength(0); yybegin(STRING); }
         {FloatLiteral}                  { return symbol(sym.FLOAT_LITERAL, new Float(yytext())); }
         {DecIntegerLiteral}             { return symbol(sym.INT_LITERAL, new Integer(yytext())); }
-        "true"                          { return symbol(sym.BOOL, new Boolean(true)); }
-        "false"                         { return symbol(sym.BOOL, new Boolean(false)); }
-        "null"                          { return symbol(sym.NULL); }
 }
 
 <STRING> {

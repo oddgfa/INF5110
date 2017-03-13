@@ -8,7 +8,7 @@ parser code {:
 
 :};
 /* operators*/
-terminal						NOT
+terminal						NOT;
 terminal                        LOG_AND, LOG_OR;
 terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
 terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
@@ -27,15 +27,15 @@ terminal						COLON;
 terminal						RETURN;
 terminal                        PROCEDURE;
 terminal                        VAR;
-terminal                        REF, DEREF;
 terminal String                 ID;
-terminal 			            BOOL;
-terminal						INT;
-terminal						STRING;
-terminal						FLOAT;
+terminal 			            TYPE_BOOL;
+terminal						TYPE_INT;
+terminal						TYPE_STRING;
+terminal						TYPE_FLOAT;
 terminal                        NULL;
 terminal						TRUE;
 terminal						FALSE;
+terminal                        BOOL;
 terminal						NEW;
 terminal						REF;
 terminal						DEREF;
@@ -48,13 +48,13 @@ terminal Integer                INT_LITERAL;
 /* Non terminals */
 non terminal Program            	program;
 
-/*Declarations
+/*Declarations*/
 non terminal Decl               	decl;
-non terminal ProcedureDecl			proc_decl;
+non terminal ProcDecl			    proc_decl;
 non terminal ClassDecl          	class_decl;
-non terminal VariableDecl           var_decl;
-non terminal ParameterDecl			param_decl;
 non terminal List<Decl>         	decl_list;
+non terminal VarDecl                var_decl;
+non terminal ParamDecl			    param_decl;
 
 /*Expression*/
 non terminal Exp					exp;
@@ -67,11 +67,11 @@ non terminal Literal				literal;
 non terminal Type               	type;
 
 /*statement*/
-non terminal AssignStmt				assign_stmt
-non terminal Statement				stmt;
+non terminal AssignStmt				assign_stmt;
+non terminal Stmt				    stmt;
 non terminal IfStmt					if_stmt;
 non terminal WhileStmt				while_stmt;
-non terminal ReturnStatement		return_stmt;
+non terminal ReturnStmt		        return_stmt;
 non terminal CallStmt				call_stmt;
 
 /*Precedence*/
