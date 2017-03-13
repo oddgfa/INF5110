@@ -4,4 +4,13 @@ begin
    var Real : float;
   end;
   class TestClass2 begin end;
+
+  proc Dummy ( a : int ): int
+    begin
+    end;
+
+  proc WithDecl ( a : int ): bool
+    begin
+      var b : int;
+    end;
 end;

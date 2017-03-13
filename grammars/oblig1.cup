@@ -2,6 +2,7 @@ package oblig1parser;
 import java_cup.runtime.*;
 import syntaxtree.*;
 import syntaxtree.decl.*;
+import syntaxtree.stmt.*;
 import java.util.*;
 
 parser code {:
@@ -52,9 +53,12 @@ non terminal Program            	program;
 non terminal Decl               	decl;
 non terminal ProcDecl			    proc_decl;
 non terminal ClassDecl          	class_decl;
-non terminal List<Decl>         	decl_list;
 non terminal VarDecl                var_decl;
+non terminal List<VarDecl>          var_list;
+non terminal List<ParamDecl>        param_list;
 non terminal ParamDecl			    param_decl;
+non terminal List<Stmt>             stmt_list, opt_stmt_list;
+non terminal List<Decl>         	decl_list, opt_decl_list;
 
 /*Expression*/
 non terminal Exp					exp;
@@ -90,12 +94,18 @@ program         ::= PROGRAM ID:name BEGIN decl_list:dl END SEMI
                         {: RESULT = new Program(name, dl); :} 
                   ;
 
+opt_decl_list   ::= decl_list:l {: RESULT = l; :}
+                | {: RESULT = new LinkedList<Decl>(); :};
+
 decl_list       ::= decl:d SEMI {: List<Decl> l = new LinkedList<Decl>(); l.add(d); RESULT = l; :}
                 |   decl_list:dl decl:d SEMI {: dl.add(d); RESULT = dl; :};
 
 decl            ::= class_decl:sd {: RESULT = sd; :}
                 |   var_decl:vd {: RESULT = vd; :}
+                |   proc_decl:pd {: RESULT = pd; :}
                                   ;
+
+stmt            ::= {: RESULT = new DummyStmt(); :};
                                   
 class_decl      ::= CLASS ID:name BEGIN var_list:vl END
                         {: RESULT = new ClassDecl(name, vl); :}
@@ -106,6 +116,24 @@ var_list        ::= var_decl:v SEMI {: List<VarDecl> l = new LinkedList<VarDecl>
                 | var_list:l var_decl:v SEMI {: l.add(v); RESULT = l; :};
 
 var_decl        ::= VAR ID:name COLON type:t {: RESULT = new VarDecl(name, t); :};
+
+proc_decl       ::= PROCEDURE ID:name LPAR param_list:pl RPAR COLON type:t BEGIN opt_decl_list:dl opt_stmt_list:sl END
+                    {: RESULT = new ProcDecl(name, pl, dl, sl, t); :}
+                | PROCEDURE ID:name LPAR param_list:pl RPAR BEGIN opt_decl_list:dl opt_stmt_list:sl END
+                    {: RESULT = new ProcDecl(name, pl, dl, sl); :}
+                ;
+
+param_list      ::= param_decl:d {: List<ParamDecl> l = new LinkedList<ParamDecl>(); l.add(d); RESULT = l; :}
+                |   param_list:pl COMMA param_decl:d {: pl.add(d); RESULT = pl; :}
+                | {: RESULT = new LinkedList<ParamDecl>(); :};
+
+param_decl      ::= ID:name COLON type:t {: RESULT = new ParamDecl(name, t); :};
+
+opt_stmt_list   ::= stmt_list:l {: RESULT = l; :}
+                | {: RESULT = new LinkedList<Stmt>(); :};
+
+stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(s); RESULT = l; :}
+                |   stmt_list:sl stmt:s SEMI {: sl.add(s); RESULT = sl; :};
 
 type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :} | TYPE_INT {: RESULT = new Type("int"); :} | TYPE_STRING {: RESULT = new Type("string"); :} | TYPE_BOOL {: RESULT = new Type("bool"); :};
 
