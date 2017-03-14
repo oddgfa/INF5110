@@ -2,6 +2,7 @@ package oblig1parser;
 import java_cup.runtime.*;
 import syntaxtree.*;
 import syntaxtree.decl.*;
+import syntaxtree.expr.*;
 import syntaxtree.stmt.*;
 import java.util.*;
 
@@ -90,26 +91,7 @@ precedence left DOT;
 
 
 /* The grammar */
-program         ::= PROGRAM ID:name BEGIN decl_list:dl END SEMI
-                        {: RESULT = new Program(name, dl); :} 
-                  ;
 
-opt_decl_list   ::= decl_list:l {: RESULT = l; :}
-                | {: RESULT = new LinkedList<Decl>(); :};
-
-decl_list       ::= decl:d SEMI {: List<Decl> l = new LinkedList<Decl>(); l.add(d); RESULT = l; :}
-                |   decl_list:dl decl:d SEMI {: dl.add(d); RESULT = dl; :};
-
-decl            ::= class_decl:sd {: RESULT = sd; :}
-                |   var_decl:vd {: RESULT = vd; :}
-                |   proc_decl:pd {: RESULT = pd; :}
-                                  ;
-
-stmt            ::= {: RESULT = new DummyStmt(); :};
-                                  
-class_decl      ::= CLASS ID:name BEGIN var_list:vl END
-                        {: RESULT = new ClassDecl(name, vl); :}
-                | CLASS ID:name BEGIN END
                         {: RESULT = new ClassDecl(name); :};
 
 var_list        ::= var_decl:v SEMI {: List<VarDecl> l = new LinkedList<VarDecl>(); l.add(v); RESULT = l; :}
@@ -137,4 +119,146 @@ stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(
 
 type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :} | TYPE_INT {: RESULT = new Type("int"); :} | TYPE_STRING {: RESULT = new Type("string"); :} | TYPE_BOOL {: RESULT = new Type("bool"); :};
 
+exp 	::= log_op_exp:e
+		{:
+			RESULT = e;
+		:}
+	|	rel_op_exp:e
+		{:
+			RESULT = e;
+		:}
+	|	arit_op_exp:e
+		{:
+			RESULT = e;
+		:}
+	|	NOT exp:e
+		{:
+			RESULT = new NotExpr(e);
+		:}
+	|	var:v
+		{:
+			RESULT = v;
+		:}
+	|	literal:l
+		{:
+			RESULT = l;
+		:}
+	|	call_stmt:s
+		{:
+			RESULT = new CallStatementExpression(s);
+		:}
+	|	NEW name:name
+		{:
+			RESULT = new NewExpr(new Type(name));
+		:}
+	|	REF exp:e
+		{:
+			RESULT = new RefExpr(e);
+		:}
+	|	DEREF exp:e
+		{:
+			RESULT = new DerefVarExpr(e);
+		:}
+	|	NOT exp:e
+		{:
+			RESULT = new NotExpr(e);
+		:}
+	/*missing parantheses expression*/
+	/*missing binary expression*/
+	/*missing unary expression*/
+	
+;
+log_op_exp 	::=	exp:e1 LOG_AND exp:e2
+		{:
+			RESULT = new LogOpExpr(e1, String, e2);	/*How to use AND*/
+		:}
+	|	exp:e1 LOG_OR exp:e2
+		{:
+			RESULT = new LogOpExpr(e1, String, e2);	/*How to use OR*/
+		:}
+;
 
+rel_op_exp 	::= exp:e1 REL_EQ exp:e2
+		{:
+			RESULT = new RelOpExpr(e1, "==", e2);
+		:}
+	|	exp:e1 REL_NEQ exp:e2
+		{:
+			RESULT = new RelOpExpr(e1, "!=", e2);
+		:}
+	|	exp:e1 REL_GT exp:e2
+		{:
+			RESULT = new RelOpExpr(e1, ">", e2);
+		:}
+	|	exp:e1 REL_GTE exp:e2
+		{:
+			RESULT = new RelOpExpr(e1, ">=", e2);
+		:}
+	|	exp:e1 REL_LT exp:e2
+		{:
+			RESULT = new RelOpExpr(e1, "<", e2);
+		:}
+	|	exp:e1 REL_LTE exp:e2
+		{:
+			RESULT = new RelOpExpr(e1, ""<=, e2);
+		:}
+;
+
+arit_op_exp 	::= exp:e1 ARIT_PLUS exp:e2
+		{:
+			RESULT = new AritOpExpr(e1, "+" , e2);
+		:}
+	|	exp:e1 ARIT_MINUS exp:e2
+		{:
+			RESULT = new AritOpExpr(e1, "-" , e2);
+		:}
+	|	exp:e1 ARIT_MUL exp:e2
+		{:
+			RESULT = new AritOpExpr(e1, "*" , e2);
+		:}
+	|	exp:e1 ARIT_DIV exp:e2
+		{:
+			RESULT = new AritOpExpr(e1, "/", e2);
+		:}
+	|	exp:e1 ARIT_POW exp:e2
+		{:
+			RESULT = new AritOpExpr(e1, "^" , e2);
+		:}
+;
+name 	::= ID:id
+		{:
+			RESULT = new Name(id);
+		:}
+;
+
+/*missing literal*/
+
+assign_stmt 	::=	var:v COLON_EQUAL exp:e
+		{:
+			RESULT = new AssignStatement(v, e);
+		:}
+;
+
+while_stmt 	::=	WHILE exp:e DO LPAR opt_stmt_list:s RPAR
+		{:
+			RESULT = new WhileStmt(e, s);
+		:}
+;
+
+/*if statement missing*/
+
+return_stmt 	::=	RETURN exp:e
+		{:
+			RESULT = new ReturnStmt(e);
+		:}
+	|	RETURN
+		{:
+			RESULT = new ReturnStmt();
+		:}
+;
+
+call_stmt 	::= name:name LPAR exprs_list:exprs RPAR
+		{:
+			RESULT = new CallStmt(name, exprs);
+		:}
+;
