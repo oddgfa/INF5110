@@ -47,33 +47,33 @@ terminal String                 ID;
 terminal                        BOOL;
 
 /* Non terminals */
-non terminal Program		        program;
-non terminal Decl		        decl;
-non terminal VarDecl		        var_decl;
-non terminal ProcDecl		        proc_decl;
-non terminal ClassDecl	        	class_decl;
-non terminal Name		        name;
-non terminal Type			type;
-non terminal ParamDecl	        	param_decl;
-non terminal Stmt		        stmt;
-non terminal Exp		        exp;
-non terminal BinaryExpr		      binary_expr;		/*adding binary expr*/
-non terminal UnaryExpr		      unary_expr;		/*adding unary expr*/
-non terminal Log_Op_Exp		      log_op_exp;
-non terminal Rel_Op_Exp		      rel_op_exp;
-non terminal Arit_Op_Exp	      arit_op_exp;
-non terminal Literal		      literal;
-non terminal IfStmt		      if_stmt;
-non terminal WhileStmt		      while_stmt;
-non terminal ReturnStmt		      return_stmt;
-non terminal CallStmt		      call_stmt;
-non terminal AssignStmt		      assign_stmt;
+non terminal Program		program;
+non terminal Decl		decl;
+non terminal VarDecl		var_decl;
+non terminal ProcDecl		proc_decl;
+non terminal ClassDecl	        class_decl;
+non terminal Name		name;
+non terminal Type		type;
+non terminal ParamDecl	        param_decl;
+non terminal Stmt		stmt;
+non terminal Exp		exp;
+non terminal BinaryExpr		binary_expr;		/*adding binary expr*/
+non terminal UnaryExpr		unary_expr;		/*adding unary expr*/
+non terminal Log_Op_Exp		log_op_exp;
+non terminal Rel_Op_Exp		rel_op_exp;
+non terminal Arit_Op_Exp	arit_op_exp;
+non terminal Literal		literal;
+non terminal IfStmt		if_stmt;
+non terminal WhileStmt		while_stmt;
+non terminal ReturnStmt		return_stmt;
+non terminal CallStmt		call_stmt;
+non terminal AssignStmt		assign_stmt;
 
-non terminal List<VarDecl>  	  	var_list;
-non terminal List<ParamDecl>	  	param_list;
+non terminal List<VarDecl>  	var_list;
+non terminal List<ParamDecl>	param_list;
 
-non terminal List<Stmt>		      stmt_list, opt_stmt_list;
-non terminal List<Decl>		      decl_list, opt_decl_list;
+non terminal List<Stmt>		stmt_list, opt_stmt_list;
+non terminal List<Decl>		decl_list, opt_decl_list;
 
 /*Precedence*/
 precedence left LOG_OR;
