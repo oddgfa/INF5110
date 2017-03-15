@@ -9,42 +9,52 @@ import java.util.*;
 parser code {:
 
 :};
-/* operators*/
+/* Keywords*/
 terminal                        PROGRAM;
+terminal                        CLASS;
 terminal                        BEGIN;
 terminal                        END;
 terminal                        VAR;
-terminal                        COLON;
-terminal                        PROC;
-terminal                        LPAR, RPAR;
-terminal                        COMMA;
-terminal                        SEMI;
-terminal                        CLASS;
-terminal                        NOT;
-terminal                        NEW;
+terminal                        PROCEDURE;
+terminal                        RETURN;
 terminal                        REF;
 terminal                        DEREF;
-terminal                        DOT;
-terminal                        LOG_AND;
-terminal                        LOG_OR;
-terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
-terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
-terminal Float                  FLOAT_LITERAL;
-terminal String                 STRING_LITERAL;
-terminal Integer                INT_LITERAL;
-terminal                        NULL;
-terminal                        TRUE;
-terminal                        FALSE;
 terminal                        IF, THEN, ELSE;
 terminal                        WHILE, DO;
-terminal                        ASSIGN;
-terminal                        RETURN;
+terminal                        NOT;
+terminal                        NEW;
+
+/* Constants */
+terminal Boolean                BOOL;
+terminal                        NULL;
+
+/* Types */
 terminal                        TYPE_BOOL;
 terminal                        TYPE_INT;
 terminal                        TYPE_STRING;
 terminal                        TYPE_FLOAT;
 terminal String                 ID;
-terminal                        BOOL;
+
+/* Symbols */
+terminal                        LPAR, RPAR;
+terminal                        SEMI;
+terminal                        COLON;
+terminal                        DOT;
+terminal                        COMMA;
+terminal                        ASSIGN;
+terminal                        LOG_AND;
+terminal                        LOG_OR;
+terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
+terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
+
+/* Identifiers */
+terminal                        ID;
+
+/* Literals */
+terminal Float                  FLOAT_LITERAL;
+terminal String                 STRING_LITERAL;
+terminal Integer                INT_LITERAL;
+
 
 /* Nonterminals */
 /* Misc */
@@ -125,9 +135,9 @@ var_list        ::= var_decl:v SEMI {: List<VarDecl> l = new LinkedList<VarDecl>
 
 var_decl        ::= VAR ID:name COLON type:t {: RESULT = new VarDecl(name, t); :};
 
-proc_decl       ::= PROC ID:name LPAR param_list:pl RPAR COLON type:t BEGIN opt_decl_list:dl opt_stmt_list:sl END
+proc_decl       ::= PROCEDURE ID:name LPAR param_list:pl RPAR COLON type:t BEGIN opt_decl_list:dl opt_stmt_list:sl END
                     {: RESULT = new ProcDecl(name, pl, dl, sl, t); :}
-                | PROC ID:name LPAR param_list:pl RPAR BEGIN opt_decl_list:dl opt_stmt_list:sl END
+                | PROCEDURE ID:name LPAR param_list:pl RPAR BEGIN opt_decl_list:dl opt_stmt_list:sl END
                     {: RESULT = new ProcDecl(name, pl, dl, sl); :};
 
 param_list      ::= param_decl:d {: List<ParamDecl> l = new LinkedList<ParamDecl>(); l.add(d); RESULT = l; :}

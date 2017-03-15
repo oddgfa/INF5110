@@ -52,6 +52,8 @@ SpecialCharacter = \n | \r | \f | \t
         "else"                          { return symbol(sym.ELSE); }
         "while"                         { return symbol(sym.WHILE); }
         "do"                            { return symbol(sym.DO); }
+        "not"                           { return symbol(sym.NOT); }
+        "new"                           { return symbol(sym.NEW); }
 
         /* constants */
         "true"                          { return symbol(sym.BOOL, new Boolean(true)); }
