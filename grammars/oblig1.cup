@@ -78,7 +78,6 @@ non terminal List<VarDecl>      var_list;
 non terminal List<ParamDecl>    param_list;
 
 /* Expressions */
-<<<<<<< HEAD
 non terminal Exp                exp;
 non terminal List<Exp>      exprs_list;
 non terminal Expr               exp;
