@@ -10,42 +10,41 @@ parser code {:
 
 :};
 /* operators*/
-terminal						NOT;
-terminal                        LOG_AND, LOG_OR;
+terminal                        PROGRAM;
+terminal			BEGIN;
+terminal			END;
+terminal			VAR;
+terminal			COLON;
+terminal			PROC;
+terminal                        LPAR, RPAR;
+terminal			COMMA;
+terminal                        SEMI;
+terminal			CLASS;
+terminal			NOT;
+terminal			NEW;
+terminal			REF;
+terminal			DEREF;
+terminal                        DOT;
+terminal                        LOG_AND;
+terminal			LOG_OR;
 terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
 terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
-terminal                        DOT;
-terminal						EQUAL;
-
-terminal                        PROGRAM, CLASS;
-terminal                        BEGIN, END;
-terminal                        IF, THEN, ELSE;
-terminal                        WHILE, DO;
-terminal                        LPAR, RPAR;
-terminal						COMMA;
-terminal                        ASSIGN;
-terminal                        SEMI;
-terminal						COLON;
-terminal						RETURN;
-terminal                        PROCEDURE;
-terminal                        VAR;
-terminal String                 ID;
-terminal 			            TYPE_BOOL;
-terminal						TYPE_INT;
-terminal						TYPE_STRING;
-terminal						TYPE_FLOAT;
-terminal                        NULL;
-terminal						TRUE;
-terminal						FALSE;
-terminal                        BOOL;
-terminal						NEW;
-terminal						REF;
-terminal						DEREF;
-
-/*literals*/
 terminal Float                  FLOAT_LITERAL;
 terminal String                 STRING_LITERAL;
 terminal Integer                INT_LITERAL;
+terminal                        NULL;
+terminal			TRUE;
+terminal			FALSE;
+terminal                        IF, THEN, ELSE;
+terminal                        WHILE, DO;
+terminal                        ASSIGN;
+terminal			RETURN;
+terminal 			TYPE_BOOL;
+terminal			TYPE_INT;
+terminal			TYPE_STRING;
+terminal			TYPE_FLOAT;
+terminal String                 ID;
+terminal                        BOOL;
 
 /* Non terminals */
 non terminal Program            	program;
