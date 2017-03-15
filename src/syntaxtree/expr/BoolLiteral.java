@@ -8,13 +8,13 @@ import syntaxtree.Type;
 public class BoolLiteral extends LiteralExpr {
 
 	Boolean name;
-	
+
 	public BoolLiteral (Boolean name){
-		this.name = name;	
+		this.name = name;
 	}
 
     @Override
     public String printAst() {
-	return "( BOOL_LITERAL "+ name.printAst() +")";
+	return "( BOOL_LITERAL "+ name +")";
     }
 }

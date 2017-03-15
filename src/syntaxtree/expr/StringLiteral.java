@@ -8,13 +8,13 @@ import syntaxtree.Type;
 public class StringLiteral extends LiteralExpr {
 
 	String name;
-	
+
 	public StringLiteral (String name){
-		this.name = name;	
+		this.name = name;
 	}
 
     @Override
     public String printAst() {
-	return "( STRING_LITERAL "+ name.printAst() +")";
+	return "( STRING_LITERAL "+ name +")";
     }
 }

@@ -8,13 +8,13 @@ import syntaxtree.Type;
 public class FloatLiteral extends LiteralExpr {
 
 	Float name;
-	
+
 	public FloatLiteral (Float name){
-		this.name = name;	
+		this.name = name;
 	}
 
     @Override
     public String printAst() {
-	return "( FLOAT_LITERAL "+ name.printAst() +")";
+	return "( FLOAT_LITERAL "+ name +")";
     }
 }
