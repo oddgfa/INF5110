@@ -23,6 +23,8 @@ terminal                        IF, THEN, ELSE;
 terminal                        WHILE, DO;
 terminal                        NOT;
 terminal                        NEW;
+terminal			TRUE;
+terminal			FALSE;
 
 /* Constants */
 terminal Boolean                BOOL;
@@ -46,9 +48,9 @@ terminal                        LOG_AND;
 terminal                        LOG_OR;
 terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
 terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
+terminal			COLON_EQUAL;
 
 /* Identifiers */
-terminal                        ID;
 
 /* Literals */
 terminal Float                  FLOAT_LITERAL;
@@ -74,6 +76,7 @@ non terminal List<ParamDecl>    param_list;
 
 /* Expressions */
 non terminal Exp                exp;
+non terminal List<Exp>      exprs_list;
 non terminal BinaryExpr         binary_expr;
 non terminal UnaryExpr          unary_expr;
 non terminal LogOpExp           log_op_exp;
@@ -165,7 +168,7 @@ binary_expr     ::= log_op_exp:e {: RESULT = e; :}
                 |   arit_op_exp:e {: RESULT = e; :};
 
 unary_expr      ::= NOT exp:e {: RESULT = new NotExpr(e); :}
-                |   var ID:v exp:e
+                |   ID:v exp:e
                     {: RESULT = new VarExpr(v); RESULT = new VarExpr(v, e); /*can we have two results here?*/:}
                 |   literal: l {: RESULT = new LiteralExpr(l); :}
 /*what to do about call statement, keep it in exp or stmt?*/
@@ -200,7 +203,7 @@ arit_op_exp     ::= exp:e1 ARIT_PLUS exp:e2 {: RESULT = new AritOpExpr(e1, "+" ,
 
 name            ::= ID:id {: RESULT = new Name(id); :};
 
-assign_stmt     ::= var:v COLON_EQUAL exp:e {: RESULT = new AssignStatement(v, e); :};
+assign_stmt     ::= VAR:v COLON_EQUAL exp:e {: RESULT = new AssignStmt(v, e); :};
 
 while_stmt      ::= WHILE exp:e DO LPAR opt_stmt_list:s RPAR {: RESULT = new WhileStmt(e, s); :};
 
@@ -210,3 +213,5 @@ return_stmt     ::= RETURN exp:e {: RESULT = new ReturnStmt(e); :}
                 |   RETURN {: RESULT = new ReturnStmt(); :};
 
 call_stmt       ::= name:name LPAR exprs_list:exprs RPAR {: RESULT = new CallStmt(name, exprs); :};
+
+
