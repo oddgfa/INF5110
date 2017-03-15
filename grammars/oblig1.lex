@@ -35,6 +35,7 @@ SpecialCharacter = \n | \r | \f | \t
 %%
 <YYINITIAL>{
         {WhiteSpace}                    {}
+        {Comment}                       {}
 
         /* keywords */
         "program"                       { return symbol(sym.PROGRAM); }
