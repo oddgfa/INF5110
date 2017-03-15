@@ -46,34 +46,46 @@ terminal                        TYPE_FLOAT;
 terminal String                 ID;
 terminal                        BOOL;
 
-/* Non terminals */
-non terminal Program		program;
-non terminal Decl		decl;
-non terminal VarDecl		var_decl;
-non terminal ProcDecl		proc_decl;
-non terminal ClassDecl	        class_decl;
-non terminal Name		name;
-non terminal Type		type;
-non terminal ParamDecl	        param_decl;
-non terminal Stmt		stmt;
-non terminal Exp		exp;
-non terminal BinaryExpr		binary_expr;		/*adding binary expr*/
-non terminal UnaryExpr		unary_expr;		/*adding unary expr*/
-non terminal Log_Op_Exp		log_op_exp;
-non terminal Rel_Op_Exp		rel_op_exp;
-non terminal Arit_Op_Exp	arit_op_exp;
-non terminal Literal		literal;
-non terminal IfStmt		if_stmt;
-non terminal WhileStmt		while_stmt;
-non terminal ReturnStmt		return_stmt;
-non terminal CallStmt		call_stmt;
-non terminal AssignStmt		assign_stmt;
+/* Nonterminals */
+/* Misc */
+non terminal Program            program;
+non terminal Name               name;
+non terminal Type               type;
 
-non terminal List<VarDecl>  	var_list;
-non terminal List<ParamDecl>	param_list;
+/* Declarations */
+non terminal Decl               decl;
+non terminal VarDecl            var_decl;
+non terminal ProcDecl           proc_decl;
+non terminal ClassDecl          class_decl;
+non terminal ParamDecl          param_decl;
+non terminal List<Decl>         decl_list, opt_decl_list;
+non terminal List<VarDecl>      var_list;
+non terminal List<ParamDecl>    param_list;
 
-non terminal List<Stmt>		stmt_list, opt_stmt_list;
-non terminal List<Decl>		decl_list, opt_decl_list;
+/* Expressions */
+non terminal Exp                exp;
+non terminal BinaryExpr         binary_expr;
+non terminal UnaryExpr          unary_expr;
+non terminal LogOpExp           log_op_exp;
+non terminal RelOpExp           rel_op_exp;
+non terminal AritOpExp          arit_op_exp;
+
+/* Statements */
+non terminal Stmt               stmt;
+non terminal IfStmt             if_stmt;
+non terminal WhileStmt          while_stmt;
+non terminal ReturnStmt         return_stmt;
+non terminal CallStmt           call_stmt;
+non terminal AssignStmt         assign_stmt;
+non terminal List<Stmt>         stmt_list, opt_stmt_list;
+
+/* Literals */
+non terminal Literal            literal;
+non terminal BoolLiteral        bool_literal;
+non terminal FloatLiteral       float_literal;
+non terminal IntLiteral         int_literal;
+non terminal NullLiteral        null_literal;
+non terminal StringLiteral      string_literal;
 
 /*Precedence*/
 precedence left LOG_OR;
@@ -89,10 +101,10 @@ precedence left DOT;
 /* The grammar */
 
 program         ::= PROGRAM ID:name BEGIN decl_list:dl END SEMI
-                     {: RESULT = new Program(name, dl); :} ;
+                    {: RESULT = new Program(name, dl); :} ;
 
 opt_decl_list   ::= decl_list:l {: RESULT = l; :}
-                | {: RESULT = new LinkedList<Decl>(); :};
+                |   {: RESULT = new LinkedList<Decl>(); :};
 
 decl_list       ::= decl:d SEMI {: List<Decl> l = new LinkedList<Decl>(); l.add(d); RESULT = l; :}
                 |   decl_list:dl decl:d SEMI {: dl.add(d); RESULT = dl; :};
@@ -102,215 +114,89 @@ decl            ::= class_decl:sd {: RESULT = sd; :}
                 |   proc_decl:pd {: RESULT = pd; :};
 
 stmt            ::= {: RESULT = new DummyStmt(); :};
-                                  
+
 class_decl      ::= CLASS ID:name BEGIN var_list:vl END
-                        {: RESULT = new ClassDecl(name, vl); :}
-                | CLASS ID:name BEGIN END
-                  {: RESULT = new ClassDecl(name); :};
+                    {: RESULT = new ClassDecl(name, vl); :}
+                |   CLASS ID:name BEGIN END
+                    {: RESULT = new ClassDecl(name); :};
 
 var_list        ::= var_decl:v SEMI {: List<VarDecl> l = new LinkedList<VarDecl>(); l.add(v); RESULT = l; :}
-                | var_list:l var_decl:v SEMI {: l.add(v); RESULT = l; :};
+                |   var_list:l var_decl:v SEMI {: l.add(v); RESULT = l; :};
 
 var_decl        ::= VAR ID:name COLON type:t {: RESULT = new VarDecl(name, t); :};
 
 proc_decl       ::= PROC ID:name LPAR param_list:pl RPAR COLON type:t BEGIN opt_decl_list:dl opt_stmt_list:sl END
                     {: RESULT = new ProcDecl(name, pl, dl, sl, t); :}
                 | PROC ID:name LPAR param_list:pl RPAR BEGIN opt_decl_list:dl opt_stmt_list:sl END
-                    {: RESULT = new ProcDecl(name, pl, dl, sl); :}
-                ;
+                    {: RESULT = new ProcDecl(name, pl, dl, sl); :};
 
 param_list      ::= param_decl:d {: List<ParamDecl> l = new LinkedList<ParamDecl>(); l.add(d); RESULT = l; :}
                 |   param_list:pl COMMA param_decl:d {: pl.add(d); RESULT = pl; :}
-                | {: RESULT = new LinkedList<ParamDecl>(); :};
+                |   {: RESULT = new LinkedList<ParamDecl>(); :};
 
 param_decl      ::= ID:name COLON type:t {: RESULT = new ParamDecl(name, t); :};
 
 opt_stmt_list   ::= stmt_list:l {: RESULT = l; :}
-                | {: RESULT = new LinkedList<Stmt>(); :};
+                |   {: RESULT = new LinkedList<Stmt>(); :};
 
 stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(s); RESULT = l; :}
                 |   stmt_list:sl stmt:s SEMI {: sl.add(s); RESULT = sl; :};
 
-type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :} | TYPE_INT {: RESULT = new Type("int"); :} | TYPE_STRING {: RESULT = new Type("string"); :} | TYPE_BOOL {: RESULT = new Type("bool"); :};
+type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :}
+                |   TYPE_INT {: RESULT = new Type("int"); :}
+                |   TYPE_STRING {: RESULT = new Type("string"); :}
+                |   TYPE_BOOL {: RESULT = new Type("bool"); :};
 
-exp		::= binary_expr:e
-		{:
-			RESULT = e;
-	      	:}
-	    |	unary_expr:e
-	      	{:
-			RESULT = e;
-	      	:} 	
-;
+exp             ::= binary_expr:e {: RESULT = e; :}
+                |   unary_expr:e {: RESULT = e; :};
 
-binary_expr	::= log_op_exp:e
-		{:
-              		RESULT = e;
-            	:}
-          |	rel_op_exp:e
-            	{:
-              		RESULT = e;
-            	:}
-          |	arit_op_exp:e
-            	{:
-              		RESULT = e;
-            	:}
-;
+binary_expr     ::= log_op_exp:e {: RESULT = e; :}
+                |   rel_op_exp:e {: RESULT = e; :}
+                |   arit_op_exp:e {: RESULT = e; :};
 
-unary_expr	::= NOT exp:e
-            {:
-              RESULT = new NotExpr(e);
-            :}
-          |	var ID:v exp:e
-            {:
-              RESULT = new VarExpr(v);
-              RESULT = new VarExpr(v, e);		/*can we have two results here?*/
-            :}
-          |	literal: l
-            {:
-              RESULT = new LiteralExpr(l);
-            :}
-            
-	/*what to do about call statement, keep it in exp or stmt?*/
-  
-          |	call_stmt:s
-            {:
-              RESULT = new CallStatementExpression(s);
-            :}
+unary_expr      ::= NOT exp:e {: RESULT = new NotExpr(e); :}
+                |   var ID:v exp:e
+                    {: RESULT = new VarExpr(v); RESULT = new VarExpr(v, e); /*can we have two results here?*/:}
+                |   literal: l {: RESULT = new LiteralExpr(l); :}
+/*what to do about call statement, keep it in exp or stmt?*/
+                |   call_stmt:s {: RESULT = new CallStatementExpression(s); :}
+                |   NEW name:name {: RESULT = new NewExpr(new Type(name)); :}
+                |   REF exp:e {: RESULT = new RefExpr(e); :}
+                |   DEREF exp:e {: RESULT = new DerefVarExpr(e); :}
+                |   LPAR exp:e RPAR {: RESULT = new ParenthesesExpr(e); :};
 
-          |	NEW name:name
-            {:
-              RESULT = new NewExpr(new Type(name));
-            :}
-          |	REF exp:e
-            {:
-              RESULT = new RefExpr(e);
-            :}
-          |	DEREF exp:e
-            {:
-              RESULT = new DerefVarExpr(e);
-            :}
-          |	LPAR exp:e RPAR
-            {:
-              RESULT = new ParenthesesExpr(e);
-            :}
-;
+literal         ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f); :}
+                |   INT_LITERAL:i {: RESULT = new IntLiteral(i); :}
+                |   STRING_LITERAL:s {: RESULT = new StringLiteral(s); :}
+                |   TRUE {: RESULT = new BoolLiteral(true); :}
+                |   FALSE {: RESULT = new BoolLiteral(false); :}
+                |   NULL {: RESULT = new NullLiteral(); :};
 
-literal 	::=	FLOAT_LITERAL:f
-          {:
-            RESULT = new FloatLiteral(f);
-          :}
-        |	INT_LITERAL:i
-          {:
-            RESULT = new IntLiteral(i);
-          :}
-        |	STRING_LITERAL:s
-          {:
-            RESULT = new StringLiteral(s);
-          :}
-        |	TRUE
-          {:
-            RESULT = new BoolLiteral(true);
-          :}
-        |	FALSE
-          {:
-            RESULT = new BoolLiteral(false);
-          :}
-        |	NULL
-          {:
-            RESULT = new NullLiteral();
-          :}
-;
+log_op_exp      ::= exp:e1 LOG_AND exp:e2 {: RESULT = new LogOpExpr(e1, "&&", e2);    /*How to use AND*/ :}
+                |   exp:e1 LOG_OR exp:e2 {: RESULT = new LogOpExpr(e1, "||", e2);    /*How to use OR*/:};
 
-log_op_exp 	::=	exp:e1 LOG_AND exp:e2
-            {:
-              RESULT = new LogOpExpr(e1, "&&", e2);	/*How to use AND*/
-            :}
-          |	exp:e1 LOG_OR exp:e2
-            {:
-              RESULT = new LogOpExpr(e1, "||", e2);	/*How to use OR*/
-            :}
-;
+rel_op_exp      ::= exp:e1 REL_EQ exp:e2 {: RESULT = new RelOpExpr(e1, "=", e2); :}
+                |   exp:e1 REL_NEQ exp:e2 {: RESULT = new RelOpExpr(e1, "<>", e2); :}
+                |   exp:e1 REL_GT exp:e2 {: RESULT = new RelOpExpr(e1, ">", e2); :}
+                |   exp:e1 REL_GTE exp:e2 {: RESULT = new RelOpExpr(e1, ">=", e2); :}
+                |   exp:e1 REL_LT exp:e2 {: RESULT = new RelOpExpr(e1, "<", e2); :}
+                |   exp:e1 REL_LTE exp:e2 {: RESULT = new RelOpExpr(e1, ""<=, e2); :};
 
-rel_op_exp 	::= exp:e1 REL_EQ exp:e2
-            {:
-              RESULT = new RelOpExpr(e1, "=", e2);
-            :}
-          |	exp:e1 REL_NEQ exp:e2
-            {:
-              RESULT = new RelOpExpr(e1, "<>", e2);
-            :}
-          |	exp:e1 REL_GT exp:e2
-            {:
-              RESULT = new RelOpExpr(e1, ">", e2);
-            :}
-          |	exp:e1 REL_GTE exp:e2
-            {:
-              RESULT = new RelOpExpr(e1, ">=", e2);
-            :}
-          |	exp:e1 REL_LT exp:e2
-            {:
-              RESULT = new RelOpExpr(e1, "<", e2);
-            :}
-          |	exp:e1 REL_LTE exp:e2
-            {:
-              RESULT = new RelOpExpr(e1, ""<=, e2);
-            :}
-;
+arit_op_exp     ::= exp:e1 ARIT_PLUS exp:e2 {: RESULT = new AritOpExpr(e1, "+" , e2); :}
+                |   exp:e1 ARIT_MINUS exp:e2 {: RESULT = new AritOpExpr(e1, "-" , e2); :}
+                |   exp:e1 ARIT_MUL exp:e2 {: RESULT = new AritOpExpr(e1, "*" , e2); :}
+                |   exp:e1 ARIT_DIV exp:e2 {: RESULT = new AritOpExpr(e1, "/", e2); :}
+                |   exp:e1 ARIT_POW exp:e2 {: RESULT = new AritOpExpr(e1, "#" , e2); :};
 
-arit_op_exp 	::= exp:e1 ARIT_PLUS exp:e2
-              {:
-                RESULT = new AritOpExpr(e1, "+" , e2);
-              :}
-            |	exp:e1 ARIT_MINUS exp:e2
-              {:
-                RESULT = new AritOpExpr(e1, "-" , e2);
-              :}
-            |	exp:e1 ARIT_MUL exp:e2
-              {:
-                RESULT = new AritOpExpr(e1, "*" , e2);
-              :}
-            |	exp:e1 ARIT_DIV exp:e2
-              {:
-                RESULT = new AritOpExpr(e1, "/", e2);
-              :}
-            |	exp:e1 ARIT_POW exp:e2
-              {:
-                RESULT = new AritOpExpr(e1, "#" , e2);
-              :}
-;
-name 		::= 	ID:id
-        {:
-          RESULT = new Name(id);
-        :}
-;
+name            ::= ID:id {: RESULT = new Name(id); :};
 
-assign_stmt 	::=	var:v COLON_EQUAL exp:e
-              {:
-                RESULT = new AssignStatement(v, e);
-              :}
-;
+assign_stmt     ::= var:v COLON_EQUAL exp:e {: RESULT = new AssignStatement(v, e); :};
 
-while_stmt 	::=	WHILE exp:e DO LPAR opt_stmt_list:s RPAR
-            {:
-              RESULT = new WhileStmt(e, s);
-            :}
-;
+while_stmt      ::= WHILE exp:e DO LPAR opt_stmt_list:s RPAR {: RESULT = new WhileStmt(e, s); :};
 
 /*if statement missing*/
 
-return_stmt 	::=	RETURN exp:e
-              {:
-                RESULT = new ReturnStmt(e);
-              :}
-            |	RETURN
-              {:
-                RESULT = new ReturnStmt();
-              :}
-;
+return_stmt     ::= RETURN exp:e {: RESULT = new ReturnStmt(e); :}
+                |   RETURN {: RESULT = new ReturnStmt(); :};
 
-call_stmt 	::= name:name LPAR exprs_list:exprs RPAR
-            {:
-              RESULT = new CallStmt(name, exprs);
-            :}
-;
+call_stmt       ::= name:name LPAR exprs_list:exprs RPAR {: RESULT = new CallStmt(name, exprs); :};
