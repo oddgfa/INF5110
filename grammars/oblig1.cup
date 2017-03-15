@@ -50,11 +50,10 @@ terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NE
 terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
 terminal			COLON_EQUAL;
 
-<<<<<<< HEAD
+
 /* Identifiers */
 
-=======
->>>>>>> 0fe003b6bc92a1f2d280b4ffac56127feeec9c4c
+
 /* Literals */
 terminal Float                  FLOAT_LITERAL;
 terminal String                 STRING_LITERAL;
@@ -82,9 +81,7 @@ non terminal List<ParamDecl>    param_list;
 <<<<<<< HEAD
 non terminal Exp                exp;
 non terminal List<Exp>      exprs_list;
-=======
-non terminal Expr               expr;
->>>>>>> 0fe003b6bc92a1f2d280b4ffac56127feeec9c4c
+non terminal Expr               exp;
 non terminal BinaryExpr         binary_expr;
 non terminal UnaryExpr          unary_expr;
 non terminal LogOpExpr          log_op_expr;
@@ -201,13 +198,11 @@ binary_expr     ::= log_op_expr:e {: RESULT = e; :}
                 |   rel_op_expr:e {: RESULT = e; :}
                 |   arit_op_expr:e {: RESULT = e; :};
 
-<<<<<<< HEAD
+
 unary_expr      ::= NOT exp:e {: RESULT = new NotExpr(e); :}
                 |   ID:v exp:e
-=======
-unary_expr      ::= NOT expr:e {: RESULT = new NotExpr(e); :}
-                |   var ID:v expr:e
->>>>>>> 0fe003b6bc92a1f2d280b4ffac56127feeec9c4c
+
+
                     {: RESULT = new VarExpr(v); RESULT = new VarExpr(v, e); /*can we have two results here?*/:}
                 |   literal: l {: RESULT = new LiteralExpr(l); :}
 /*what to do about call statement, keep it in expr or stmt?*/
@@ -217,15 +212,12 @@ unary_expr      ::= NOT expr:e {: RESULT = new NotExpr(e); :}
                 |   DEREF expr:e {: RESULT = new DerefVarExpr(e); :}
                 |   LPAR expr:e RPAR {: RESULT = new ParenthesesExpr(e); :};
 
-
-<<<<<<< HEAD
 name            ::= ID:id {: RESULT = new Name(id); :};
 
 assign_stmt     ::= VAR:v COLON_EQUAL exp:e {: RESULT = new AssignStmt(v, e); :};
-=======
+
 log_op_expr      ::= expr:e1 LOG_AND expr:e2 {: RESULT = new LogOpExpr(e1, "&&", e2);    /*How to use AND*/ :}
                 |   expr:e1 LOG_OR expr:e2 {: RESULT = new LogOpExpr(e1, "||", e2);    /*How to use OR*/:};
->>>>>>> 0fe003b6bc92a1f2d280b4ffac56127feeec9c4c
 
 rel_op_expr      ::= expr:e1 REL_EQ expr:e2 {: RESULT = new RelOpExpr(e1, "=", e2); :}
                 |   expr:e1 REL_NEQ expr:e2 {: RESULT = new RelOpExpr(e1, "<>", e2); :}
@@ -240,18 +232,16 @@ arit_op_expr     ::= expr:e1 ARIT_PLUS expr:e2 {: RESULT = new AritOpExpr(e1, "+
                 |   expr:e1 ARIT_DIV expr:e2 {: RESULT = new AritOpExpr(e1, "/", e2); :}
                 |   expr:e1 ARIT_POW expr:e2 {: RESULT = new AritOpExpr(e1, "#" , e2); :};
 
-<<<<<<< HEAD
 return_stmt     ::= RETURN exp:e {: RESULT = new ReturnStmt(e); :}
                 |   RETURN {: RESULT = new ReturnStmt(); :};
 
 call_stmt       ::= name:name LPAR exprs_list:exprs RPAR {: RESULT = new CallStmt(name, exprs); :};
 
 
-=======
 /* Literals */
 literal         ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f); :}
                 |   INT_LITERAL:i {: RESULT = new IntLiteral(i); :}
                 |   STRING_LITERAL:s {: RESULT = new StringLiteral(s); :}
                 |   BOOL:b {: RESULT = new BoolLiteral(b); :}
                 |   NULL {: RESULT = new NullLiteral(); :};
->>>>>>> 0fe003b6bc92a1f2d280b4ffac56127feeec9c4c
+
