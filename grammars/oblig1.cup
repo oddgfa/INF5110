@@ -134,27 +134,27 @@ stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(
 type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :} | TYPE_INT {: RESULT = new Type("int"); :} | TYPE_STRING {: RESULT = new Type("string"); :} | TYPE_BOOL {: RESULT = new Type("bool"); :};
 
 exp		::= binary_expr:e
-      {:
-        RESULT = e;
-      :}
-    |	unary_expr:e
-      {:
-        RESULT = e;
-      :} 	
+		{:
+			RESULT = e;
+	      	:}
+	    |	unary_expr:e
+	      	{:
+			RESULT = e;
+	      	:} 	
 ;
 
 binary_expr	::= log_op_exp:e
-            {:
-              RESULT = e;
-            :}
+		{:
+              		RESULT = e;
+            	:}
           |	rel_op_exp:e
-            {:
-              RESULT = e;
-            :}
+            	{:
+              		RESULT = e;
+            	:}
           |	arit_op_exp:e
-            {:
-              RESULT = e;
-            :}
+            	{:
+              		RESULT = e;
+            	:}
 ;
 
 unary_expr	::= NOT exp:e
