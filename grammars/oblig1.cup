@@ -11,72 +11,72 @@ parser code {:
 :};
 /* operators*/
 terminal                        PROGRAM;
-terminal			BEGIN;
-terminal			END;
-terminal			VAR;
-terminal			COLON;
-terminal			PROC;
+terminal                        BEGIN;
+terminal                        END;
+terminal                        VAR;
+terminal                        COLON;
+terminal                        PROC;
 terminal                        LPAR, RPAR;
-terminal			COMMA;
+terminal                        COMMA;
 terminal                        SEMI;
-terminal			CLASS;
-terminal			NOT;
-terminal			NEW;
-terminal			REF;
-terminal			DEREF;
+terminal                        CLASS;
+terminal                        NOT;
+terminal                        NEW;
+terminal                        REF;
+terminal                        DEREF;
 terminal                        DOT;
 terminal                        LOG_AND;
-terminal			LOG_OR;
+terminal                        LOG_OR;
 terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
 terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
 terminal Float                  FLOAT_LITERAL;
 terminal String                 STRING_LITERAL;
 terminal Integer                INT_LITERAL;
 terminal                        NULL;
-terminal			TRUE;
-terminal			FALSE;
+terminal                        TRUE;
+terminal                        FALSE;
 terminal                        IF, THEN, ELSE;
 terminal                        WHILE, DO;
 terminal                        ASSIGN;
-terminal			RETURN;
-terminal 			TYPE_BOOL;
-terminal			TYPE_INT;
-terminal			TYPE_STRING;
-terminal			TYPE_FLOAT;
+terminal                        RETURN;
+terminal                        TYPE_BOOL;
+terminal                        TYPE_INT;
+terminal                        TYPE_STRING;
+terminal                        TYPE_FLOAT;
 terminal String                 ID;
 terminal                        BOOL;
 
 /* Non terminals */
-non terminal Program            	program;
+non terminal Program            program;
 
 /*Declarations*/
-non terminal Decl               	decl;
-non terminal ProcDecl			    proc_decl;
-non terminal ClassDecl          	class_decl;
-non terminal VarDecl                var_decl;
-non terminal List<VarDecl>          var_list;
-non terminal List<ParamDecl>        param_list;
-non terminal ParamDecl			    param_decl;
-non terminal List<Stmt>             stmt_list, opt_stmt_list;
-non terminal List<Decl>         	decl_list, opt_decl_list;
+non terminal Decl               decl;
+non terminal ProcDecl           proc_decl;
+non terminal ClassDecl          class_decl;
+non terminal VarDecl            var_decl;
+non terminal List<VarDecl>      var_list;
+non terminal List<ParamDecl>    param_list;
+non terminal ParamDecl          param_decl;
+non terminal List<Stmt>         stmt_list, opt_stmt_list;
+non terminal List<Decl>         decl_list, opt_decl_list;
 
 /*Expression*/
-non terminal Exp					exp;
-non terminal Log_Op_Exp				log_op_exp;
-non terminal Arit_Op_Exp			arit_op_exp;
-non terminal Rel_Op_Exp				rel_op_exp;
-non terminal Name					name;
+non terminal Exp                exp;
+non terminal Log_Op_Exp         log_op_exp;
+non terminal Arit_Op_Exp        arit_op_exp;
+non terminal Rel_Op_Exp         rel_op_exp;
+non terminal Name               name;
 
-non terminal Literal				literal;
-non terminal Type               	type;
+non terminal Literal            literal;
+non terminal Type               type;
 
 /*statement*/
-non terminal AssignStmt				assign_stmt;
-non terminal Stmt				    stmt;
-non terminal IfStmt					if_stmt;
-non terminal WhileStmt				while_stmt;
-non terminal ReturnStmt		        return_stmt;
-non terminal CallStmt				call_stmt;
+non terminal AssignStmt         assign_stmt;
+non terminal Stmt               stmt;
+non terminal IfStmt             if_stmt;
+non terminal WhileStmt          while_stmt;
+non terminal ReturnStmt         return_stmt;
+non terminal CallStmt           call_stmt;
 
 /*Precedence*/
 precedence left LOG_OR;
@@ -90,9 +90,6 @@ precedence left DOT;
 
 
 /* The grammar */
-
-                        {: RESULT = new ClassDecl(name); :};
-
 var_list        ::= var_decl:v SEMI {: List<VarDecl> l = new LinkedList<VarDecl>(); l.add(v); RESULT = l; :}
                 | var_list:l var_decl:v SEMI {: l.add(v); RESULT = l; :};
 
@@ -118,146 +115,146 @@ stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(
 
 type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :} | TYPE_INT {: RESULT = new Type("int"); :} | TYPE_STRING {: RESULT = new Type("string"); :} | TYPE_BOOL {: RESULT = new Type("bool"); :};
 
-exp 	::= log_op_exp:e
-		{:
-			RESULT = e;
-		:}
-	|	rel_op_exp:e
-		{:
-			RESULT = e;
-		:}
-	|	arit_op_exp:e
-		{:
-			RESULT = e;
-		:}
-	|	NOT exp:e
-		{:
-			RESULT = new NotExpr(e);
-		:}
-	|	var:v
-		{:
-			RESULT = v;
-		:}
-	|	literal:l
-		{:
-			RESULT = l;
-		:}
-	|	call_stmt:s
-		{:
-			RESULT = new CallStatementExpression(s);
-		:}
-	|	NEW name:name
-		{:
-			RESULT = new NewExpr(new Type(name));
-		:}
-	|	REF exp:e
-		{:
-			RESULT = new RefExpr(e);
-		:}
-	|	DEREF exp:e
-		{:
-			RESULT = new DerefVarExpr(e);
-		:}
-	|	NOT exp:e
-		{:
-			RESULT = new NotExpr(e);
-		:}
-	/*missing parantheses expression*/
-	/*missing binary expression*/
-	/*missing unary expression*/
-	
+exp     ::= log_op_exp:e
+        {:
+            RESULT = e;
+        :}
+    |    rel_op_exp:e
+        {:
+            RESULT = e;
+        :}
+    |    arit_op_exp:e
+        {:
+            RESULT = e;
+        :}
+    |    NOT exp:e
+        {:
+            RESULT = new NotExpr(e);
+        :}
+    |    var:v
+        {:
+            RESULT = v;
+        :}
+    |    literal:l
+        {:
+            RESULT = l;
+        :}
+    |    call_stmt:s
+        {:
+            RESULT = new CallStatementExpression(s);
+        :}
+    |    NEW name:name
+        {:
+            RESULT = new NewExpr(new Type(name));
+        :}
+    |    REF exp:e
+        {:
+            RESULT = new RefExpr(e);
+        :}
+    |    DEREF exp:e
+        {:
+            RESULT = new DerefVarExpr(e);
+        :}
+    |    NOT exp:e
+        {:
+            RESULT = new NotExpr(e);
+        :}
+    /*missing parantheses expression*/
+    /*missing binary expression*/
+    /*missing unary expression*/
+
 ;
-log_op_exp 	::=	exp:e1 LOG_AND exp:e2
-		{:
-			RESULT = new LogOpExpr(e1, String, e2);	/*How to use AND*/
-		:}
-	|	exp:e1 LOG_OR exp:e2
-		{:
-			RESULT = new LogOpExpr(e1, String, e2);	/*How to use OR*/
-		:}
+log_op_exp     ::=    exp:e1 LOG_AND exp:e2
+        {:
+            RESULT = new LogOpExpr(e1, String, e2);    /*How to use AND*/
+        :}
+    |    exp:e1 LOG_OR exp:e2
+        {:
+            RESULT = new LogOpExpr(e1, String, e2);    /*How to use OR*/
+        :}
 ;
 
-rel_op_exp 	::= exp:e1 REL_EQ exp:e2
-		{:
-			RESULT = new RelOpExpr(e1, "==", e2);
-		:}
-	|	exp:e1 REL_NEQ exp:e2
-		{:
-			RESULT = new RelOpExpr(e1, "!=", e2);
-		:}
-	|	exp:e1 REL_GT exp:e2
-		{:
-			RESULT = new RelOpExpr(e1, ">", e2);
-		:}
-	|	exp:e1 REL_GTE exp:e2
-		{:
-			RESULT = new RelOpExpr(e1, ">=", e2);
-		:}
-	|	exp:e1 REL_LT exp:e2
-		{:
-			RESULT = new RelOpExpr(e1, "<", e2);
-		:}
-	|	exp:e1 REL_LTE exp:e2
-		{:
-			RESULT = new RelOpExpr(e1, ""<=, e2);
-		:}
+rel_op_exp     ::= exp:e1 REL_EQ exp:e2
+        {:
+            RESULT = new RelOpExpr(e1, "==", e2);
+        :}
+    |    exp:e1 REL_NEQ exp:e2
+        {:
+            RESULT = new RelOpExpr(e1, "!=", e2);
+        :}
+    |    exp:e1 REL_GT exp:e2
+        {:
+            RESULT = new RelOpExpr(e1, ">", e2);
+        :}
+    |    exp:e1 REL_GTE exp:e2
+        {:
+            RESULT = new RelOpExpr(e1, ">=", e2);
+        :}
+    |    exp:e1 REL_LT exp:e2
+        {:
+            RESULT = new RelOpExpr(e1, "<", e2);
+        :}
+    |    exp:e1 REL_LTE exp:e2
+        {:
+            RESULT = new RelOpExpr(e1, ""<=, e2);
+        :}
 ;
 
-arit_op_exp 	::= exp:e1 ARIT_PLUS exp:e2
-		{:
-			RESULT = new AritOpExpr(e1, "+" , e2);
-		:}
-	|	exp:e1 ARIT_MINUS exp:e2
-		{:
-			RESULT = new AritOpExpr(e1, "-" , e2);
-		:}
-	|	exp:e1 ARIT_MUL exp:e2
-		{:
-			RESULT = new AritOpExpr(e1, "*" , e2);
-		:}
-	|	exp:e1 ARIT_DIV exp:e2
-		{:
-			RESULT = new AritOpExpr(e1, "/", e2);
-		:}
-	|	exp:e1 ARIT_POW exp:e2
-		{:
-			RESULT = new AritOpExpr(e1, "^" , e2);
-		:}
+arit_op_exp     ::= exp:e1 ARIT_PLUS exp:e2
+        {:
+            RESULT = new AritOpExpr(e1, "+" , e2);
+        :}
+    |    exp:e1 ARIT_MINUS exp:e2
+        {:
+            RESULT = new AritOpExpr(e1, "-" , e2);
+        :}
+    |    exp:e1 ARIT_MUL exp:e2
+        {:
+            RESULT = new AritOpExpr(e1, "*" , e2);
+        :}
+    |    exp:e1 ARIT_DIV exp:e2
+        {:
+            RESULT = new AritOpExpr(e1, "/", e2);
+        :}
+    |    exp:e1 ARIT_POW exp:e2
+        {:
+            RESULT = new AritOpExpr(e1, "^" , e2);
+        :}
 ;
-name 	::= ID:id
-		{:
-			RESULT = new Name(id);
-		:}
+name     ::= ID:id
+        {:
+            RESULT = new Name(id);
+        :}
 ;
 
 /*missing literal*/
 
-assign_stmt 	::=	var:v COLON_EQUAL exp:e
-		{:
-			RESULT = new AssignStatement(v, e);
-		:}
+assign_stmt     ::=    var:v COLON_EQUAL exp:e
+        {:
+            RESULT = new AssignStatement(v, e);
+        :}
 ;
 
-while_stmt 	::=	WHILE exp:e DO LPAR opt_stmt_list:s RPAR
-		{:
-			RESULT = new WhileStmt(e, s);
-		:}
+while_stmt     ::=    WHILE exp:e DO LPAR opt_stmt_list:s RPAR
+        {:
+            RESULT = new WhileStmt(e, s);
+        :}
 ;
 
 /*if statement missing*/
 
-return_stmt 	::=	RETURN exp:e
-		{:
-			RESULT = new ReturnStmt(e);
-		:}
-	|	RETURN
-		{:
-			RESULT = new ReturnStmt();
-		:}
+return_stmt     ::=    RETURN exp:e
+        {:
+            RESULT = new ReturnStmt(e);
+        :}
+    |    RETURN
+        {:
+            RESULT = new ReturnStmt();
+        :}
 ;
 
-call_stmt 	::= name:name LPAR exprs_list:exprs RPAR
-		{:
-			RESULT = new CallStmt(name, exprs);
-		:}
+call_stmt     ::= name:name LPAR exprs_list:exprs RPAR
+        {:
+            RESULT = new CallStmt(name, exprs);
+        :}
 ;
