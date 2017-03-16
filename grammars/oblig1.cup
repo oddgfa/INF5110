@@ -198,8 +198,7 @@ binary_expr     ::= log_op_expr:e {: RESULT = e; :}
 
 
 unary_expr      ::= NOT expr:e {: RESULT = new NotExpr(e); :}
-                |   ID:v expr:e
-                    {: RESULT = new VarExpr(v); RESULT = new VarExpr(v, e); /*can we have two results here?*/:}
+                |   var:v {: RESULT = v; :}
                 |   literal: l {: RESULT = l; :}
 /*what to do about call statement, keep it in expr or stmt?*/
                 //|   call_stmt:s {: RESULT = s; :}
@@ -226,10 +225,6 @@ arit_op_expr     ::= expr:e1 ARIT_PLUS expr:e2 {: RESULT = new AritOpExpr(e1, "+
                 |   expr:e1 ARIT_DIV expr:e2 {: RESULT = new AritOpExpr(e1, "/", e2); :}
                 |   expr:e1 ARIT_POW expr:e2 {: RESULT = new AritOpExpr(e1, "#" , e2); :};
 
-return_stmt     ::= RETURN expr:e {: RESULT = new ReturnStmt(e); :}
-                |   RETURN {: RESULT = new ReturnStmt(); :};
-
-call_stmt       ::= ID:name LPAR expr_list:exprs RPAR {: RESULT = new CallStmt(name, exprs); :};
 
 
 /* Literals */
