@@ -47,6 +47,10 @@ terminal                        LOG_OR;
 terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
 terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
 
+
+/* Identifiers */
+
+
 /* Literals */
 terminal Float                  FLOAT_LITERAL;
 terminal String                 STRING_LITERAL;
@@ -56,13 +60,14 @@ terminal Integer                INT_LITERAL;
 /* Nonterminals */
 /* Misc */
 non terminal Program            program;
-non terminal Name               name;
 non terminal Type               type;
 
 
 /* Declarations */
 non terminal Decl               decl;
 non terminal VarDecl            var_decl;
+non terminal DerefVarExpr       deref_var;
+non terminal RefExpr            ref_var;
 non terminal ProcDecl           proc_decl;
 non terminal ClassDecl          class_decl;
 non terminal ParamDecl          param_decl;
@@ -73,18 +78,17 @@ non terminal List<ParamDecl>    param_list;
 /* Expressions */
 non terminal Expr               expr;
 non terminal VarExpr            var;
-non terminal RefExpr            ref_var;
-non terminal DerefVarExpr       deref_var;
+non terminal List<Expr>         expr_list;
 non terminal BinaryExpr         binary_expr;
 non terminal UnaryExpr          unary_expr;
 non terminal LogOpExpr          log_op_expr;
 non terminal RelOpExpr          rel_op_expr;
 non terminal AritOpExpr         arit_op_expr;
-non terminal List<Expr>         expr_list;
 
 /* Statements */
 non terminal Stmt               stmt;
 non terminal IfStmt             if_stmt;
+non terminal List<Stmt>         else_stmt;
 non terminal WhileStmt          while_stmt;
 non terminal ReturnStmt         return_stmt;
 non terminal CallStmt           call_stmt;
@@ -93,11 +97,11 @@ non terminal List<Stmt>         stmt_list, opt_stmt_list;
 
 /* Literals */
 non terminal LiteralExpr        literal;
-non terminal BoolLiteral        bool_literal;
-non terminal FloatLiteral       float_literal;
-non terminal IntLiteral         int_literal;
-non terminal NullLiteral        null_literal;
-non terminal StringLiteral      string_literal;
+//non terminal BoolLiteral        bool_literal;
+//non terminal FloatLiteral       float_literal;
+//non terminal IntLiteral         int_literal;
+//non terminal NullLiteral        null_literal;
+//non terminal StringLiteral      string_literal;
 
 /*Precedence*/
 precedence left LOG_OR;
@@ -115,8 +119,6 @@ start with program;
 
 program         ::= PROGRAM ID:name BEGIN decl_list:dl END SEMI
                     {: RESULT = new Program(name, dl); :};
-
-name            ::= ID:id {: RESULT = new Name(id); :};
 
 /* Declarations */
 opt_decl_list   ::= decl_list:l {: RESULT = l; :}
@@ -154,22 +156,27 @@ param_list      ::= param_decl:d {: List<ParamDecl> l = new LinkedList<ParamDecl
 param_decl      ::= ID:name COLON type:t {: RESULT = new ParamDecl(name, t); :};
 
 /* Statements */
+stmt            ::= assign_stmt:as {: RESULT = as; :}
+                |   if_stmt:is {: RESULT = is; :}
+                |   while_stmt:ws {: RESULT = ws; :}
+                |   return_stmt:rs {: RESULT = rs; :}
+                |   call_stmt:cs {: RESULT = cs; :};
+
 opt_stmt_list   ::= stmt_list:l {: RESULT = l; :}
                 |   {: RESULT = new LinkedList<Stmt>(); :};
 
 stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(s); RESULT = l; :}
                 |   stmt_list:sl stmt:s SEMI {: sl.add(s); RESULT = sl; :};
 
-stmt            ::= {: RESULT = new DummyStmt(); :};
-
 assign_stmt     ::= var:v ASSIGN expr:e {: RESULT = new AssignStmt(v, e); :};
 
-/*
-if_stmt         ::= IF expr:e THEN BEGIN stmt_list:sl END else_stmt;
 
-else_stmt       ::= ELSE BEGIN stmt_list:sl END
-                |   ;
-*/
+if_stmt         ::= IF expr:e THEN BEGIN opt_stmt_list:il END else_stmt:el
+                    {: RESULT = new IfStmt(e, il, el); :};
+
+else_stmt       ::= ELSE BEGIN opt_stmt_list:el END {: RESULT = el; :}
+                |   {: RESULT = new LinkedList<Stmt>(); :};
+
 
 while_stmt      ::= WHILE expr:e DO LPAR opt_stmt_list:s RPAR {: RESULT = new WhileStmt(e, s); :};
 
@@ -192,18 +199,23 @@ binary_expr     ::= log_op_expr:e {: RESULT = e; :}
                 |   rel_op_expr:e {: RESULT = e; :}
                 |   arit_op_expr:e {: RESULT = e; :};
 
+
 unary_expr      ::= NOT expr:e {: RESULT = new NotExpr(e); :}
                 |   var:v {: RESULT = v; :}
-                |   literal:l {: RESULT = l; :}
-                // |   call_stmt:s {: RESULT = s; :}
-                |   NEW name:name {: RESULT = new NewExpr(new Type(name)); :}
-                |   ref_var:r {: RESULT = r; :}
-                |   deref_var:d {: RESULT = d; :}
+                |   literal: l {: RESULT = l; :}
+                //|   call_stmt:s {: RESULT = s; :}
+                |   NEW ID:name {: RESULT = new NewExpr(new Type(name)); :}
+                |   ref_var:rv {: RESULT = rv; :}
+                |   deref_var:dv {: RESULT = dv; :}
                 |   LPAR expr:e RPAR {: RESULT = new ParenthesesExpr(e); :};
 
+log_op_expr     ::= expr:e1 LOG_AND expr:e2 {: RESULT = new LogOpExpr(e1, "&&", e2);    /*How to use AND*/ :}
+                |   expr:e1 LOG_OR expr:e2 {: RESULT = new LogOpExpr(e1, "||", e2);    /*How to use OR*/:};
 
-log_op_expr     ::= expr:e1 LOG_AND expr:e2 {: RESULT = new LogOpExpr(e1, "&&", e2); :}
-                |   expr:e1 LOG_OR expr:e2 {: RESULT = new LogOpExpr(e1, "||", e2); :};
+ref_var         ::= REF LPAR var:v RPAR {: RESULT = new RefExpr(v); :};
+
+deref_var       ::= DEREF LPAR var:v RPAR {: RESULT = new DerefVarExpr(v); :}
+                |   DEREF LPAR deref_var:dv RPAR {: RESULT = dv; :};
 
 rel_op_expr     ::= expr:e1 REL_EQ expr:e2 {: RESULT = new RelOpExpr(e1, "=", e2); :}
                 |   expr:e1 REL_NEQ expr:e2 {: RESULT = new RelOpExpr(e1, "<>", e2); :}
@@ -218,10 +230,7 @@ arit_op_expr    ::= expr:e1 ARIT_PLUS expr:e2 {: RESULT = new AritOpExpr(e1, "+"
                 |   expr:e1 ARIT_DIV expr:e2 {: RESULT = new AritOpExpr(e1, "/", e2); :}
                 |   expr:e1 ARIT_POW expr:e2 {: RESULT = new AritOpExpr(e1, "#" , e2); :};
 
-ref_var         ::= REF LPAR var:v RPAR {: RESULT = new RefExpr(v); :};
 
-deref_var       ::= DEREF LPAR var:v RPAR {: RESULT = new DerefVarExpr(v); :}
-                |   DEREF LPAR deref_var:df RPAR {: RESULT = df; :};
 
 /* Literals */
 literal         ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f); :}
