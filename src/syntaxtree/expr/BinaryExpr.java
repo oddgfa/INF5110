@@ -5,7 +5,7 @@ import syntaxtree.Expr;
 /**
  * Created by pjurasek on 28.02.17.
  */
-abstract class BinaryExpr extends Expr {
+public abstract class BinaryExpr extends Expr {
 
     Expr left;
     String op;
