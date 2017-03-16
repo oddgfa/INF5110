@@ -79,6 +79,7 @@ non terminal List<ParamDecl>    param_list;
 non terminal Expr               expr;
 non terminal VarExpr            var;
 non terminal List<Expr>         expr_list;
+non terminal List<Expr>         opt_expr_list;
 non terminal BinaryExpr         binary_expr;
 non terminal UnaryExpr          unary_expr;
 non terminal LogOpExpr          log_op_expr;
@@ -162,7 +163,7 @@ stmt            ::= assign_stmt:as {: RESULT = as; :}
                 |   return_stmt:rs {: RESULT = rs; :}
                 |   call_stmt:cs {: RESULT = cs; :};
 
-opt_stmt_list   ::= stmt_list:l {: RESULT = l; :}
+opt_stmt_list   ::= stmt_list:sl {: RESULT = sl; :}
                 |   {: RESULT = new LinkedList<Stmt>(); :};
 
 stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(s); RESULT = l; :}
@@ -178,12 +179,12 @@ else_stmt       ::= ELSE BEGIN opt_stmt_list:el END {: RESULT = el; :}
                 |   {: RESULT = new LinkedList<Stmt>(); :};
 
 
-while_stmt      ::= WHILE expr:e DO LPAR opt_stmt_list:s RPAR {: RESULT = new WhileStmt(e, s); :};
+while_stmt      ::= WHILE expr:e DO BEGIN opt_stmt_list:s END {: RESULT = new WhileStmt(e, s); :};
 
 return_stmt     ::= RETURN expr:e {: RESULT = new ReturnStmt(e); :}
                 |   RETURN {: RESULT = new ReturnStmt(); :};
 
-call_stmt       ::= ID:name LPAR expr_list:exprs RPAR {: RESULT = new CallStmt(name, exprs); :};
+call_stmt       ::= ID:name LPAR opt_expr_list:exprs RPAR {: RESULT = new CallStmt(name, exprs); :};
 
 /* Types */
 type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :}
@@ -199,7 +200,6 @@ binary_expr     ::= log_op_expr:e {: RESULT = e; :}
                 |   rel_op_expr:e {: RESULT = e; :}
                 |   arit_op_expr:e {: RESULT = e; :};
 
-
 unary_expr      ::= NOT expr:e {: RESULT = new NotExpr(e); :}
                 |   var:v {: RESULT = v; :}
                 |   literal: l {: RESULT = l; :}
@@ -209,13 +209,8 @@ unary_expr      ::= NOT expr:e {: RESULT = new NotExpr(e); :}
                 |   deref_var:dv {: RESULT = dv; :}
                 |   LPAR expr:e RPAR {: RESULT = new ParenthesesExpr(e); :};
 
-log_op_expr     ::= expr:e1 LOG_AND expr:e2 {: RESULT = new LogOpExpr(e1, "&&", e2);    /*How to use AND*/ :}
-                |   expr:e1 LOG_OR expr:e2 {: RESULT = new LogOpExpr(e1, "||", e2);    /*How to use OR*/:};
-
-ref_var         ::= REF LPAR var:v RPAR {: RESULT = new RefExpr(v); :};
-
-deref_var       ::= DEREF LPAR var:v RPAR {: RESULT = new DerefVarExpr(v); :}
-                |   DEREF LPAR deref_var:dv RPAR {: RESULT = dv; :};
+log_op_expr     ::= expr:e1 LOG_AND expr:e2 {: RESULT = new LogOpExpr(e1, "&&", e2); :}
+                |   expr:e1 LOG_OR expr:e2 {: RESULT = new LogOpExpr(e1, "||", e2); :};
 
 rel_op_expr     ::= expr:e1 REL_EQ expr:e2 {: RESULT = new RelOpExpr(e1, "=", e2); :}
                 |   expr:e1 REL_NEQ expr:e2 {: RESULT = new RelOpExpr(e1, "<>", e2); :}
@@ -230,7 +225,16 @@ arit_op_expr    ::= expr:e1 ARIT_PLUS expr:e2 {: RESULT = new AritOpExpr(e1, "+"
                 |   expr:e1 ARIT_DIV expr:e2 {: RESULT = new AritOpExpr(e1, "/", e2); :}
                 |   expr:e1 ARIT_POW expr:e2 {: RESULT = new AritOpExpr(e1, "#" , e2); :};
 
+expr_list       ::= expr:e {: List<Expr> el = new LinkedList<Expr>(); el.add(e); RESULT = el; :}
+                |   expr_list:el COMMA expr:e {: el.add(e); RESULT = el; :};
 
+opt_expr_list   ::= expr_list:el {: RESULT = el; :}
+                |   {: RESULT = new LinkedList<Expr>(); :};
+
+ref_var         ::= REF LPAR var:v RPAR {: RESULT = new RefExpr(v); :};
+
+deref_var       ::= DEREF LPAR var:v RPAR {: RESULT = new DerefVarExpr(v); :}
+                |   DEREF LPAR deref_var:dv RPAR {: RESULT = dv; :};
 
 /* Literals */
 literal         ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f); :}

@@ -1,4 +1,4 @@
-program DummyProgram 
+program DummyProgram
 begin
   class TestClass begin
    var Real : float;
@@ -12,5 +12,29 @@ begin
   proc WithDecl ( a : int ): bool
     begin
       var b : int;
+
+      b := 1 < 2;
+      b := not (1 < 2);
+      b := 1 && 1;
+      b := 1 + 1;
+      b := true;
+      // b := Dummy ( 1 );
+      b := new x;
+      b := a;
+      b := ref ( a );
+      b := deref ( deref ( a ) );
+
+      Dummy ( b );
+      Dummy ( 1 );
+
+      if 1 < 2 then
+        begin
+        end;
+
+      while 1 < 2 do
+        begin
+        end;
+
+      return;
     end;
 end;
