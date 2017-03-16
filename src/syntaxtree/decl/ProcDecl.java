@@ -54,14 +54,14 @@ public class ProcDecl extends Decl {
         StringBuilder sb = new StringBuilder();
         sb.append("(PROC_DECL ");
 
-        sb.append("(NAME ");
-        sb.append(this.name);
-        sb.append(")\n");
-
         if (returnType != null) {
             sb.append(returnType.printAst());
             sb.append(" ");
         }
+
+        sb.append("(NAME ");
+        sb.append(this.name);
+        sb.append(")\n");
 
         if (params.size() > 0) {
             for (ParamDecl param : params) {
