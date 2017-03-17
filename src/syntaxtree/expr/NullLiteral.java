@@ -1,5 +1,6 @@
 package syntaxtree.expr;
 
+import syntaxtree.StringUtils;
 import syntaxtree.Type;
 
 /**
@@ -11,7 +12,7 @@ public class NullLiteral extends LiteralExpr {
 	
 	}
     @Override
-    public String printAst() {
-	return "( NULL_LITERAL )";
+    public String printAst(int depth) {
+	return StringUtils.repeat('\t', depth) + "(NULL_LITERAL)";
     }
 }

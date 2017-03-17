@@ -1,6 +1,6 @@
 package syntaxtree.expr;
 
-import syntaxtree.Type;
+import syntaxtree.StringUtils;
 
 /**
  * Created by pjurasek on 28.02.17.
@@ -14,7 +14,7 @@ public class BoolLiteral extends LiteralExpr {
 	}
 
     @Override
-    public String printAst() {
-	return "( BOOL_LITERAL "+ name +")";
+    public String printAst(int depth) {
+	return StringUtils.repeat('\t', depth) + "(BOOL_LITERAL "+ name +")";
     }
 }

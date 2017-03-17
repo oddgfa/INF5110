@@ -30,7 +30,7 @@ public class Type extends Node {
     }
 
     @Override
-    public String printAst() {
+    public String printAst(int depth) {
         return "(TYPE " + this.get() + ")";
     }
 }

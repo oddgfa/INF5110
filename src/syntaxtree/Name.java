@@ -12,7 +12,7 @@ public class Name implements PrintAst {
     }
 
     @Override
-    public String printAst() {
-        return "(NAME"+ value +")";
+    public String printAst(int depth) {
+        return StringUtils.repeat('\t', depth)+"(NAME"+ value +")";
     }
 }

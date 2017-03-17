@@ -21,9 +21,9 @@ public class VarExpr extends UnaryExpr {
     }
 
     @Override
-    public String printAst() {
+    public String printAst(int depth) {
         if (expr != null) {
-            return "( . "+ expr.printAst() +" (NAME "+ name +"))";
+            return "( . "+ expr.printAst(depth+1) +" (NAME "+ name +"))";
         } else {
             return "(NAME "+ name +")";
         }

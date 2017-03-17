@@ -1,6 +1,7 @@
 package syntaxtree.expr;
 
 import syntaxtree.Expr;
+import syntaxtree.StringUtils;
 
 /**
  * Created by pjurasek on 28.02.17.
@@ -21,7 +22,17 @@ public abstract class BinaryExpr extends Expr {
     abstract protected String getAstName();
 
     @Override
-    public String printAst() {
-        return "("+ getAstName() +" "+ op +"\n"+ left.printAst() +" "+ right.printAst();
+    public String printAst(int depth) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(StringUtils.repeat('\t', depth));
+        sb.append("("+ getAstName() +" "+ op +"\n");
+        sb.append(left.printAst(depth+1));
+        sb.append("\n");
+        sb.append(right.printAst(depth+1));
+        sb.append("\n");
+        sb.append(StringUtils.repeat('\t', depth));
+        sb.append(")");
+
+        return sb.toString();
     }
 }

@@ -1,6 +1,7 @@
 package syntaxtree.decl;
 
 import syntaxtree.Decl;
+import syntaxtree.StringUtils;
 import syntaxtree.Type;
 
 public class ParamDecl extends Decl {
@@ -12,7 +13,7 @@ public class ParamDecl extends Decl {
         this.type = type;
     }
 
-    public String printAst() {
-        return "(PARAM_DECL "+ type.printAst() +" (NAME " + name + "))";
+    public String printAst(int depth) {
+        return StringUtils.repeat('\t', depth) + "(PARAM_DECL "+ type.printAst(depth+1) +" (NAME " + name + "))";
     }
 }

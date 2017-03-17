@@ -1,12 +1,89 @@
 (PROGRAM (NAME DummyProgram)
 	(CLASS_DECL (NAME TestClass)
-	(VAR_DECL (TYPE float) (NAME Real)))
+		(VAR_DECL (TYPE float) (NAME Real))
+	)
 	(CLASS_DECL (NAME TestClass2))
 	(PROC_DECL (TYPE int) (NAME Dummy)
-	(PARAM_DECL (TYPE int) (NAME a))
-)
+		(PARAM_DECL (TYPE int) (NAME a))
+	)
 	(PROC_DECL (TYPE bool) (NAME WithDecl)
-	(PARAM_DECL (TYPE int) (NAME a))
-	(VAR_DECL (TYPE int) (NAME b))
-)
+		(PARAM_DECL (TYPE int) (NAME a))
+		(VAR_DECL (TYPE int) (NAME b))
+		(ASSIGN_STMT (NAME b)
+			(REL_OP <
+				(INT_LITERAL 1)
+				(INT_LITERAL 2)
+			)
+		)
+
+		(ASSIGN_STMT (NAME b)
+			(NOT 
+				(PARENTHESES 
+					(REL_OP <
+						(INT_LITERAL 1)
+						(INT_LITERAL 2)
+					)
+				)
+			)
+		)
+
+		(ASSIGN_STMT (NAME b)
+			(LOG_OP &&
+				(INT_LITERAL 1)
+				(INT_LITERAL 1)
+			)
+		)
+
+		(ASSIGN_STMT (NAME b)
+			(ARIT_OP +
+				(INT_LITERAL 1)
+				(INT_LITERAL 1)
+			)
+		)
+
+		(ASSIGN_STMT (NAME b)
+			(BOOL_LITERAL true)
+		)
+
+		(ASSIGN_STMT (NAME b)
+			(NEW (TYPE x))
+		)
+
+		(ASSIGN_STMT (NAME b)
+(NAME a)
+		)
+
+		(ASSIGN_STMT (NAME b)
+			(REF a)
+		)
+
+		(ASSIGN_STMT (NAME b)
+			(DEREF (NAME a))
+		)
+
+		(CALL_STMT Dummy 
+(NAME b)
+		)
+
+		(CALL_STMT Dummy 
+			(INT_LITERAL 1)
+		)
+
+		(IF_STMT
+			(REL_OP <
+				(INT_LITERAL 1)
+				(INT_LITERAL 2)
+			)
+		)
+
+		(WHILE_STMT
+			(REL_OP <
+				(INT_LITERAL 1)
+				(INT_LITERAL 2)
+			)
+		)
+
+		(RETURN)
+
+	)
 )

@@ -1,5 +1,7 @@
 package syntaxtree.expr;
 
+import syntaxtree.StringUtils;
+
 /**
  * Created by pjurasek on 28.02.17.
  */
@@ -12,7 +14,7 @@ public class DerefVarExpr extends UnaryExpr {
     }
 
     @Override
-    public String printAst() {
-        return "( DEREF "+ expr.printAst() +")";
+    public String printAst(int depth) {
+        return StringUtils.repeat('\t', depth) + "(DEREF "+ expr.printAst(depth+1) +")";
     }
 }

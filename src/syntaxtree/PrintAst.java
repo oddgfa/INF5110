@@ -5,6 +5,6 @@ package syntaxtree;
  */
 public interface PrintAst {
 
-    String printAst();
+    String printAst(int depth);
 
 }

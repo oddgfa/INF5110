@@ -2,6 +2,7 @@ package syntaxtree.stmt;
 
 import syntaxtree.Expr;
 import syntaxtree.Stmt;
+import syntaxtree.StringUtils;
 
 /**
  * Created by pjurasek on 28.02.17.
@@ -19,12 +20,12 @@ public class ReturnStmt extends Stmt {
     }
 
     @Override
-    public String printAst() {
+    public String printAst(int depth) {
         if (expr != null) {
-            return "(RETURN "+ expr.printAst() +")\n";
+            return StringUtils.repeat('\t', depth) + "(RETURN "+ expr.printAst(depth+1) +")\n";
         }
 
-        return "(RETURN)\n";
+        return StringUtils.repeat('\t', depth) + "(RETURN)\n";
     }
 
 }

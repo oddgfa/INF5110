@@ -1,5 +1,6 @@
 package syntaxtree.expr;
 
+import syntaxtree.StringUtils;
 import syntaxtree.Type;
 
 /**
@@ -8,7 +9,7 @@ import syntaxtree.Type;
 public class LiteralExpr extends UnaryExpr {
 
     @Override
-    public String printAst() {
-        return "(LITERAL TODO)";
+    public String printAst(int depth) {
+        return StringUtils.repeat('\t', depth) + "(LITERAL TODO)";
     }
 }
