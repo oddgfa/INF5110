@@ -2,6 +2,7 @@ package syntaxtree.stmt;
 
 import syntaxtree.Expr;
 import syntaxtree.Stmt;
+import syntaxtree.StringUtils;
 
 import java.util.List;
 
@@ -19,16 +20,18 @@ public class WhileStmt extends Stmt {
     }
 
     @Override
-    public String printAst() {
+    public String printAst(int depth) {
         StringBuilder sb = new StringBuilder();
-        sb.append("(WHILE_STMT ");
-        sb.append(expr.printAst());
-        sb.append(")\n");
+        sb.append(StringUtils.repeat('\t', depth));
+        sb.append("(WHILE_STMT\n");
+        sb.append(expr.printAst(depth+1));
         for (Stmt stmt: stmts) {
-            sb.append("\t").append(stmt.printAst());
+            sb.append("\t").append(stmt.printAst(depth+1));
             sb.append("\n");
         }
-        sb.append(")");
+        sb.append("\n");
+        sb.append(StringUtils.repeat('\t', depth));
+        sb.append(")\n");
         return sb.toString();
 
     }

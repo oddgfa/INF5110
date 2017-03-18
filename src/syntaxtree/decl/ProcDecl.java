@@ -2,6 +2,7 @@ package syntaxtree.decl;
 
 import syntaxtree.Decl;
 import syntaxtree.Stmt;
+import syntaxtree.StringUtils;
 import syntaxtree.Type;
 
 import java.util.LinkedList;
@@ -50,12 +51,12 @@ public class ProcDecl extends Decl {
         this.returnType = returnType;
     }
 
-    public String printAst() {
+    public String printAst(int depth) {
         StringBuilder sb = new StringBuilder();
         sb.append("(PROC_DECL ");
 
         if (returnType != null) {
-            sb.append(returnType.printAst());
+            sb.append(returnType.printAst(depth+1));
             sb.append(" ");
         }
 
@@ -65,25 +66,26 @@ public class ProcDecl extends Decl {
 
         if (params.size() > 0) {
             for (ParamDecl param : params) {
-                sb.append("\t").append(param.printAst());
+                sb.append(param.printAst(depth+1));
                 sb.append("\n");
             }
         }
 
         if (decls.size() > 0) {
             for (Decl decl : decls) {
-                sb.append("\t").append(decl.printAst());
+                sb.append(decl.printAst(depth+1));
                 sb.append("\n");
             }
         }
 
         if (stmts.size() > 0) {
             for (Stmt stmt : stmts) {
-                sb.append("\t").append(stmt.printAst());
+                sb.append(stmt.printAst(depth+1));
                 sb.append("\n");
             }
         }
 
+        sb.append(StringUtils.repeat('\t', depth));
         sb.append(")");
 
         return sb.toString();

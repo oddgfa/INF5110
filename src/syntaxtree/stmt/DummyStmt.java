@@ -1,6 +1,7 @@
 package syntaxtree.stmt;
 
 import syntaxtree.Stmt;
+import syntaxtree.StringUtils;
 
 /**
  * Created by pjurasek on 28.02.17.
@@ -8,8 +9,8 @@ import syntaxtree.Stmt;
 public class DummyStmt extends Stmt {
 
     @Override
-    public String printAst() {
-        return "(DUMMY_STMT)\n";
+    public String printAst(int depth) {
+        return StringUtils.repeat('\t', depth) + "(DUMMY_STMT)\n";
     }
 
 }

@@ -2,6 +2,7 @@ package syntaxtree.stmt;
 
 import syntaxtree.Expr;
 import syntaxtree.Stmt;
+import syntaxtree.StringUtils;
 
 import java.util.List;
 
@@ -19,15 +20,18 @@ public class CallStmt extends Stmt {
     }
 
     @Override
-    public String printAst() {
+    public String printAst(int depth) {
         StringBuilder sb = new StringBuilder();
+        sb.append(StringUtils.repeat('\t', depth));
         sb.append("(CALL_STMT ");
         sb.append(name);
         sb.append(" ");
         for (Expr expr: exprs) {
-            sb.append("\t").append(expr.printAst());
             sb.append("\n");
+            sb.append(expr.printAst(depth+1));
         }
+        sb.append("\n");
+        sb.append(StringUtils.repeat('\t', depth));
         sb.append(")\n");
         return sb.toString();
 

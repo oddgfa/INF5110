@@ -1,6 +1,7 @@
 package syntaxtree.decl;
 
 import syntaxtree.Decl;
+import syntaxtree.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,15 +19,22 @@ public class ClassDecl extends Decl {
         this(name, new LinkedList<VarDecl>());
     }
 
-    public String printAst() {
+    public String printAst(int depth) {
         StringBuilder sb = new StringBuilder();
         sb.append("(CLASS_DECL ");
         sb.append("(NAME ");
         sb.append(this.name);
         sb.append(")");
         for (VarDecl var: vars) {
-            sb.append("\n\t").append(var.printAst());
+            sb.append("\n");
+            sb.append(var.printAst(depth+1));
         }
+
+        if (vars.size() > 0) {
+            sb.append("\n");
+            sb.append(StringUtils.repeat('\t', depth));
+        }
+
         sb.append(")");
         return sb.toString();
     }

@@ -98,11 +98,6 @@ non terminal List<Stmt>         stmt_list, opt_stmt_list;
 
 /* Literals */
 non terminal LiteralExpr        literal;
-//non terminal BoolLiteral        bool_literal;
-//non terminal FloatLiteral       float_literal;
-//non terminal IntLiteral         int_literal;
-//non terminal NullLiteral        null_literal;
-//non terminal StringLiteral      string_literal;
 
 /*Precedence*/
 precedence left LOG_OR;
@@ -203,7 +198,7 @@ binary_expr     ::= log_op_expr:e {: RESULT = e; :}
 unary_expr      ::= NOT expr:e {: RESULT = new NotExpr(e); :}
                 |   var:v {: RESULT = v; :}
                 |   literal: l {: RESULT = l; :}
-                //|   call_stmt:s {: RESULT = s; :}
+                |   call_stmt:s {: RESULT = new CallExpr(s); :}
                 |   NEW ID:name {: RESULT = new NewExpr(new Type(name)); :}
                 |   ref_var:rv {: RESULT = rv; :}
                 |   deref_var:dv {: RESULT = dv; :}

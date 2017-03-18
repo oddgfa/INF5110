@@ -1,5 +1,6 @@
 package syntaxtree.expr;
 
+import syntaxtree.StringUtils;
 import syntaxtree.Type;
 
 /**
@@ -14,7 +15,7 @@ public class FloatLiteral extends LiteralExpr {
 	}
 
     @Override
-    public String printAst() {
-	return "( FLOAT_LITERAL "+ name +")";
+    public String printAst(int depth) {
+		return StringUtils.repeat('\t', depth) + "(FLOAT_LITERAL "+ name +")";
     }
 }
