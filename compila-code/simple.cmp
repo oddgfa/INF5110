@@ -3,7 +3,10 @@ begin
   class TestClass begin
    var Real : float;
   end;
+
   class TestClass2 begin end;
+
+  var z : bool;
 
   proc Dummy ( a : int ): int
     begin
@@ -18,7 +21,7 @@ begin
       b := 1 && 1;
       b := 1 + 1;
       b := true;
-      // b := Dummy ( 1 );
+      b := Dummy ( b );
       b := new x;
       b := a;
       b := ref ( a );
@@ -29,6 +32,11 @@ begin
 
       if 1 < 2 then
         begin
+        b := 1;
+        end
+      else
+        begin
+        b := 2;
         end;
 
       while 1 < 2 do
