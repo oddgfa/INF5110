@@ -17,7 +17,7 @@ public class RefType extends Type {
     }
 
     @Override
-    public String printAst() {
-        return "(REF " + this.type.get() + ")\n";
+    public String printAst(int depth) {
+        return StringUtils.repeat('\t', depth) + this.type.get();
     }
 }

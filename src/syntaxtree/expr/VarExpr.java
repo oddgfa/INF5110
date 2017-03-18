@@ -20,6 +20,9 @@ public class VarExpr extends UnaryExpr {
         this.expr = expr;
     }
 
+    protected VarExpr() {
+    }
+
     @Override
     public String printAst(int depth) {
         if (expr != null) {

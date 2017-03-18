@@ -5,16 +5,14 @@ import syntaxtree.StringUtils;
 /**
  * Created by pjurasek on 28.02.17.
  */
-public class DerefVarExpr extends UnaryExpr {
+public class DerefVarExpr extends VarExpr {
 
-    VarExpr expr;
-
-    public DerefVarExpr(VarExpr expr) {
-        this.expr = expr;
+    public DerefVarExpr(VarExpr var) {
+        this.expr = var;
     }
 
     @Override
     public String printAst(int depth) {
-        return StringUtils.repeat('\t', depth) + "(DEREF "+ expr.printAst(depth+1) +")";
+        return "(DEREF "+ expr.printAst(depth+1) +")\n";
     }
 }
