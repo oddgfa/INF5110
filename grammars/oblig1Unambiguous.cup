@@ -176,7 +176,9 @@ call_stmt       ::= ID:name LPAR opt_expr_list:exprs RPAR {: RESULT = new CallSt
 type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :}
                 |   TYPE_INT {: RESULT = new Type("int"); :}
                 |   TYPE_STRING {: RESULT = new Type("string"); :}
-                |   TYPE_BOOL {: RESULT = new Type("bool"); :};
+                |   TYPE_BOOL {: RESULT = new Type("bool"); :}
+                |   REF LPAR type:t RPAR {: RESULT = new RefType(t); :}
+                |   ID:name {: RESULT = new Type(name); :};
 
 /* Expressions */
 expr            ::= binary_expr:e {: RESULT = e; :}
