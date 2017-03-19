@@ -77,13 +77,13 @@ non terminal List<VarDecl>      var_list;
 non terminal List<ParamDecl>    param_list;
 
 /* Expressions */
-non terminal Expr               expr, expr1, expr2, expr3, expr4, expr5, expr6, expr8, expr9;
+non terminal Expr               expr, /*expr00, expr0,*/ expr1, expr2, expr3, expr4, expr5, expr6, expr8, expr9;
 non terminal VarExpr            var;
 non terminal List<Expr>         expr_list;
 non terminal List<Expr>         opt_expr_list;
 non terminal BinaryExpr         binary_expr;
-non terminal RelOpExpr          rel_op_expr;
-non terminal AritOpExpr         arit_op_expr;
+/*non terminal RelOpExpr          rel_op_expr;
+non terminal AritOpExpr         arit_op_expr;*/
 non terminal UnaryExpr          unary_expr;
 
 /* Statements */
@@ -192,19 +192,7 @@ unary_expr      ::= var: v {: RESULT = v; :}
                 |   deref_var:dv {: RESULT = dv; :}
                 |   LPAR expr1:e RPAR {: RESULT = new ParenthesesExpr(e); :};
 
-binary_expr     ::= rel_op_expr: e1 {: RESULT = e1; :}
-                |   arit_op_expr: e2 {: RESULT = e2; :};
-
-/*
-mul_div		      ::= ARIT_MUL {: RESULT ="*"; :}
-                |   ARIT_DIV {: RESULT ="/"; :};
-
-rel_op		      ::= REL_EQ {: RESULT ="="; :}
-                |   REL_NEQ {: RESULT ="<>"; :}
-                |   REL_GT {: RESULT =">"; :}
-                |   REL_GTE {: RESULT =">="; :}
-                |   REL_LT {: RESULT ="<"; :}
-                |   REL_LTE {: RESULT ="<="; :};*/
+//binary_expr   ::= expr1: e {:	RESULT=e; :};
 
 expr1           ::= expr1: e1 LOG_OR expr2:e2 {: RESULT = new LogOpExpr(e1, "||", e2); :}
         	|   expr2: e {:	RESULT=e; :};
@@ -212,7 +200,7 @@ expr1           ::= expr1: e1 LOG_OR expr2:e2 {: RESULT = new LogOpExpr(e1, "||"
 expr2		::= expr2: e1 LOG_AND expr3:e2 {: RESULT = new LogOpExpr(e1, "&&", e2); :}
 		|   expr3: e {:	RESULT=e; :};
 
-/* not expr can't be here*/
+
 expr3		::= NOT expr3:e {: RESULT = new NotExpr(e); :}
 		|	expr4:e {: RESULT=e; :};
 
