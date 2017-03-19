@@ -44,7 +44,8 @@ terminal                        COMMA;
 terminal                        ASSIGN;
 terminal                        LOG_AND;
 terminal                        LOG_OR;
-terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ, ARIT_POW;
+terminal String                 REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
+terminal                        ARIT_POW;
 terminal String                 ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV;
 
 
@@ -81,7 +82,7 @@ non terminal VarExpr            var;
 non terminal List<Expr>         expr_list;
 non terminal List<Expr>         opt_expr_list;
 non terminal BinaryExpr         binary_expr;
-non terminal RelOpExpr          rel_op_expr, add_sub, mul_div, rel_op;
+non terminal RelOpExpr          rel_op_expr;
 non terminal AritOpExpr         arit_op_expr;
 non terminal UnaryExpr          unary_expr;
 
@@ -154,8 +155,7 @@ opt_stmt_list   ::= stmt_list:sl {: RESULT = sl; :}
 stmt_list       ::= stmt:s SEMI {: List<Stmt> l = new LinkedList<Stmt>(); l.add(s); RESULT = l; :}
                 |   stmt_list:sl stmt:s SEMI {: sl.add(s); RESULT = sl; :};
 
-assign_stmt     ::= var:v ASSIGN expr:e {: RESULT = new AssignStmt(v, e); :}
-                | deref_var:v ASSIGN expr:e {: RESULT = new AssignStmt(v, e); :};
+assign_stmt     ::= var:v ASSIGN expr:e {: RESULT = new AssignStmt(v, e); :};
 
 
 if_stmt         ::= IF expr:e THEN BEGIN opt_stmt_list:il END else_stmt:el
@@ -176,9 +176,7 @@ call_stmt       ::= ID:name LPAR opt_expr_list:exprs RPAR {: RESULT = new CallSt
 type            ::= TYPE_FLOAT {: RESULT = new Type("float"); :}
                 |   TYPE_INT {: RESULT = new Type("int"); :}
                 |   TYPE_STRING {: RESULT = new Type("string"); :}
-                |   TYPE_BOOL {: RESULT = new Type("bool"); :}
-                |   REF LPAR type:t RPAR {: RESULT = new RefType(t); :}
-                |   ID:name {: RESULT = new Type(name); :};
+                |   TYPE_BOOL {: RESULT = new Type("bool"); :};
 
 /* Expressions */
 expr            ::= binary_expr:e {: RESULT = e; :}
@@ -193,15 +191,6 @@ unary_expr      ::= var: v {: RESULT = v; :}
 
 binary_expr     ::= rel_op_expr: e1 {: RESULT = e1; :}
                 |   arit_op_expr: e2 {: RESULT = e2; :};
-
-rel_op_expr     ::= rel_op;
-
-arit_op_expr    ::= add_sub
-                |   mul_div ;
-
-ARIT_PLUS    	  ::= ARIT_PLUS {: RESULT ="+"; :};
-
-ARIT_PLUS    	  ::= ARIT_MINUS {: RESULT ="-"; :};
 
 /*
 mul_div		      ::= ARIT_MUL {: RESULT ="*"; :}
@@ -224,20 +213,20 @@ expr2		::= expr2: e1 LOG_AND expr3:e2 {: RESULT = new LogOpExpr(e1, "&&", e2); :
 expr3		::= NOT expr3:e {: RESULT = new NotExpr(e); :}
 		|	expr4:e {: RESULT=e; :};
 
-expr4		::= expr4:e1 REL_GT expr5:e2 {: RESULT= new RelOpExpr(e1, ">", e2); :}
-                |   expr4:e1 REL_GTE expr5:e2 {: RESULT= new RelOpExpr(e1, ">=", e2); :}
-                |   expr4:e1 REL_LT expr5:e2 {: RESULT= new RelOpExpr(e1, "<", e2); :}
-                |   expr4:e1 REL_LTE expr5:e2 {: RESULT= new RelOpExpr(e1, "<=", e2); :}
-                |   expr4:e1 REL_EQ expr5:e2 {: RESULT= new RelOpExpr(e1, "=", e2); :}
-                |   expr4:e1 REL_NEQ expr5:e2 {: RESULT= new RelOpExpr(e1, ">=", e2); :}
+expr4		::= expr4:e1 REL_GT: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
+                |   expr4:e1 REL_GTE: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
+                |   expr4:e1 REL_LT: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
+                |   expr4:e1 REL_LTE: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
+                |   expr4:e1 REL_EQ: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
+                |   expr4:e1 REL_NEQ: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
        		|   expr5: e {: RESULT=e; :};
 
 expr5		::= expr5:e1 ARIT_PLUS: op expr6:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
                 |   expr5:e1 ARIT_MINUS: op expr6:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
 		|   expr6: e {: RESULT=e; :};
 
-expr6		::= expr6:e1 ARIT_MUL expr8:e2 {: RESULT= new AritOpExpr(e1, "*", e2); :}
-                |   expr6:e1 ARIT_DIV expr8:e2 {: RESULT= new AritOpExpr(e1, "/", e2); :}
+expr6		::= expr6:e1 ARIT_MUL: op expr8:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
+                |   expr6:e1 ARIT_DIV: op expr8:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
 		|   expr8: e {: RESULT=e; :};
 
 expr8		::= expr8:e1 ARIT_POW expr9:e2 {: RESULT= new AritOpExpr(e1, "#", e2); :}
