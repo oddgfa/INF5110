@@ -121,3 +121,9 @@ We divided the nodes into three main parts: expressions, statements and declarat
 ```
 
 [ast]: https://scontent.flcy1-1.fna.fbcdn.net/v/t1.0-9/16998786_10202854026549374_6172743699134968588_n.jpg?oh=f6c5e250667e3a884c631beabfb0c223&oe=59287E53
+
+
+# Solution methods
+For writing the ambiguous grammar, we defined precedences of the operators. We reduced expressions into unary and binary and then binary expressions eventually into Logical Operator Expressions, Arithmetic Expressions and Relational Operator Expressions. The operations were then applied to all the input expressions.
+
+For writing the unambiguous grammar we declared the operators as Strings. We created unambiguous set of productions to parse a given expression and operators were used as per input. 
