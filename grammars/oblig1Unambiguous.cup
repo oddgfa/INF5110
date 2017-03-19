@@ -44,8 +44,8 @@ terminal                        COMMA;
 terminal                        ASSIGN;
 terminal                        LOG_AND;
 terminal                        LOG_OR;
-terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ;
-terminal                        ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV, ARIT_POW;
+terminal                        REL_LT, REL_LTE, REL_GT, REL_GTE, REL_EQ, REL_NEQ, ARIT_POW;
+terminal String                 ARIT_PLUS, ARIT_MINUS, ARIT_MUL, ARIT_DIV;
 
 
 /* Identifiers */
@@ -196,9 +196,11 @@ rel_op_expr     ::= rel_op;
 arit_op_expr    ::= add_sub
                 |   mul_div ;
 
-add_sub    	    ::= ARIT_PLUS {: RESULT ="+"; :}
-                |   ARIT_MINUS {: RESULT ="-"; :};
+ARIT_PLUS    	  ::= ARIT_PLUS {: RESULT ="+"; :};
 
+ARIT_PLUS    	  ::= ARIT_MINUS {: RESULT ="-"; :};
+
+/*
 mul_div		      ::= ARIT_MUL {: RESULT ="*"; :}
                 |   ARIT_DIV {: RESULT ="/"; :};
 
@@ -207,7 +209,7 @@ rel_op		      ::= REL_EQ {: RESULT ="="; :}
                 |   REL_GT {: RESULT =">"; :}
                 |   REL_GTE {: RESULT =">="; :}
                 |   REL_LT {: RESULT ="<"; :}
-                |   REL_LTE {: RESULT ="<="; :};
+                |   REL_LTE {: RESULT ="<="; :};*/
 
 expr1           ::= expr1: e1 LOG_OR expr2:e2 {: RESULT = new LogOpExpr(e1, "||", e2); :}
         	|   expr2: e {:	RESULT=e; :};
@@ -216,38 +218,45 @@ expr2		::= expr2: e1 LOG_AND expr3:e2 {: RESULT = new LogOpExpr(e1, "&&", e2); :
 		|   expr3: e {:	RESULT=e; :};
 
 /* not expr can't be here*/
-expr3		        ::= NOT expr3:e {: RESULT = new NotExpr(e); :}
-		            |	expr4:e {: RESULT=e; :};
+expr3		::= NOT expr3:e {: RESULT = new NotExpr(e); :}
+		|	expr4:e {: RESULT=e; :};
 
-expr4		        ::= expr4:e1 rel_op: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
-        		    |   expr5: e {: RESULT=e; :};
+expr4		::= expr4:e1 REL_GT expr5:e2 {: RESULT= new RelOpExpr(e1, ">", e2); :}
+                |   expr4:e1 REL_GTE expr5:e2 {: RESULT= new RelOpExpr(e1, ">=", e2); :}
+                |   expr4:e1 REL_LT expr5:e2 {: RESULT= new RelOpExpr(e1, "<", e2); :}
+                |   expr4:e1 REL_LTE expr5:e2 {: RESULT= new RelOpExpr(e1, "<=", e2); :}
+                |   expr4:e1 REL_EQ expr5:e2 {: RESULT= new RelOpExpr(e1, "=", e2); :}
+                |   expr4:e1 REL_NEQ expr5:e2 {: RESULT= new RelOpExpr(e1, ">=", e2); :}
+       		|   expr5: e {: RESULT=e; :};
 
-expr5		        ::= expr5:e1 add_sub: op expr6:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
-		            |   expr6: e {: RESULT=e; :};
+expr5		::= expr5:e1 ARIT_PLUS: op expr6:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
+                |   expr5:e1 ARIT_MINUS: op expr6:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
+		|   expr6: e {: RESULT=e; :};
 
-expr6		        ::= expr6:e1 mul_div: op expr8:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
-		            |   expr8: e {: RESULT=e; :};
+expr6		::= expr6:e1 ARIT_MUL expr8:e2 {: RESULT= new AritOpExpr(e1, "*", e2); :}
+                |   expr6:e1 ARIT_DIV expr8:e2 {: RESULT= new AritOpExpr(e1, "/", e2); :}
+		|   expr8: e {: RESULT=e; :};
 
-expr8		        ::= expr8:e1 ARIT_POW expr9:e2 {: RESULT= new AritOpExpr(e1, "#", e2); :}
-		            |   expr9: e {: RESULT=e; :};
+expr8		::= expr8:e1 ARIT_POW expr9:e2 {: RESULT= new AritOpExpr(e1, "#", e2); :}
+		|   expr9: e {: RESULT=e; :};
 
-var             	::= ID:name {: RESULT = new VarExpr(name); :}
-                	|   expr9:e DOT ID:name {: RESULT = new VarExpr(name, e); :};
+var             ::= ID:name {: RESULT = new VarExpr(name); :}
+                |   expr9:e DOT ID:name {: RESULT = new VarExpr(name, e); :};
 
-expr_list       	::= expr:e {: List<Expr> el = new LinkedList<Expr>(); el.add(e); RESULT = el; :}
-                	|   expr_list:el COMMA expr:e {: el.add(e); RESULT = el; :};
+expr_list       ::= expr:e {: List<Expr> el = new LinkedList<Expr>(); el.add(e); RESULT = el; :}
+                |   expr_list:el COMMA expr:e {: el.add(e); RESULT = el; :};
 
-opt_expr_list   	::= expr_list:el {: RESULT = el; :}
-                	|   {: RESULT = new LinkedList<Expr>(); :};
+opt_expr_list   ::= expr_list:el {: RESULT = el; :}
+                |   {: RESULT = new LinkedList<Expr>(); :};
 
-ref_var         	::= REF LPAR var:v RPAR {: RESULT = new RefExpr(v); :};
+ref_var         ::= REF LPAR var:v RPAR {: RESULT = new RefExpr(v); :};
 
-deref_var       	::= DEREF LPAR var:v RPAR {: RESULT = new DerefVarExpr(v); :}
-                	|   DEREF LPAR deref_var:dv RPAR {: RESULT = dv; :};
+deref_var       ::= DEREF LPAR var:v RPAR {: RESULT = new DerefVarExpr(v); :}
+                |   DEREF LPAR deref_var:dv RPAR {: RESULT = dv; :};
 
 /* Literals */
-literal         	::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f); :}
-                	|   INT_LITERAL:i {: RESULT = new IntLiteral(i); :}
-                	|   STRING_LITERAL:s {: RESULT = new StringLiteral(s); :}
-                	|   BOOL:b {: RESULT = new BoolLiteral(b); :}
-                	|   NULL {: RESULT = new NullLiteral(); :};
+literal         ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f); :}
+                |   INT_LITERAL:i {: RESULT = new IntLiteral(i); :}
+                |   STRING_LITERAL:s {: RESULT = new StringLiteral(s); :}
+                |   BOOL:b {: RESULT = new BoolLiteral(b); :}
+                |   NULL {: RESULT = new NullLiteral(); :};
