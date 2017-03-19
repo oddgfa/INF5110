@@ -21,96 +21,100 @@ We divided the nodes into three main parts: expressions, statements and declarat
 		(VAR_DECL (TYPE float) (NAME Imag))
 	)
 	(PROC_DECL (NAME Swap)
-		(PARAM_DECL 			int (NAME a))
-		(PARAM_DECL 			int (NAME b))
+		(PARAM_DECL (TYPE (REF int)) (NAME a))
+		(PARAM_DECL (TYPE (REF int)) (NAME b))
+
 		(VAR_DECL (TYPE int) (NAME tmp))
-		(ASSIGN_STMT (NAME tmp)
-(DEREF (NAME a))
 
+		(ASSIGN_STMT
+			(NAME tmp)
+			(DEREF (NAME a))
 		)
-
-		(ASSIGN_STMT (DEREF (NAME a))
-
-(DEREF (NAME b))
-
+		(ASSIGN_STMT
+			(DEREF (NAME a))
+			(DEREF (NAME b))
 		)
-
-		(ASSIGN_STMT (DEREF (NAME b))
-
-(NAME tmp)
+		(ASSIGN_STMT
+			(DEREF (NAME b))
+			(NAME tmp)
 		)
-
 	)
 	(PROC_DECL (TYPE Complex) (NAME Add)
 		(PARAM_DECL (TYPE Complex) (NAME a))
 		(PARAM_DECL (TYPE Complex) (NAME b))
+
 		(VAR_DECL (TYPE Complex) (NAME retval))
-		(ASSIGN_STMT (NAME retval)
+
+		(ASSIGN_STMT
+			(NAME retval)
 			(NEW (TYPE Complex))
 		)
-
-		(ASSIGN_STMT ( . (NAME retval) (NAME Real))
+		(ASSIGN_STMT
+			( . (NAME retval) (NAME Real))
 			(ARIT_OP +
-( . (NAME a) (NAME Real))
-( . (NAME b) (NAME Real))
+				( . (NAME a) (NAME Real))
+				( . (NAME b) (NAME Real))
 			)
 		)
-
-		(ASSIGN_STMT ( . (NAME retval) (NAME Imag))
+		(ASSIGN_STMT
+			( . (NAME retval) (NAME Imag))
 			(ARIT_OP +
-( . (NAME a) (NAME Imag))
-( . (NAME b) (NAME Imag))
+				( . (NAME a) (NAME Imag))
+				( . (NAME b) (NAME Imag))
 			)
 		)
-
-		(RETURN (NAME retval))
+		(RETURN_STMT (NAME retval))
 
 	)
 	(PROC_DECL (TYPE int) (NAME Max)
 		(PARAM_DECL (TYPE int) (NAME a))
 		(PARAM_DECL (TYPE int) (NAME b))
+
 		(IF_STMT
 			(REL_OP >
-(NAME a)
-(NAME b)
-			)				(RETURN (NAME a))
-
-
+				(NAME a)
+				(NAME b)
+			)
+			(
+				(RETURN_STMT (NAME a))
+			)
 		)
 
-		(RETURN (NAME b))
+		(RETURN_STMT (NAME b))
 
 	)
 	(PROC_DECL (NAME Main)
-(PROC_DECL (TYPE float) (NAME Square)
+		(PROC_DECL (TYPE float) (NAME Square)
 			(PARAM_DECL (TYPE float) (NAME val))
-			(RETURN 				(ARIT_OP #
-(NAME val)
-					(FLOAT_LITERAL 2.0)
-				))
+
+			(RETURN_STMT (ARIT_OP #
+				(NAME val)
+				(FLOAT_LITERAL 2.0)
+			))
 
 		)
 		(VAR_DECL (TYPE float) (NAME num))
-		(ASSIGN_STMT (NAME num)
+
+		(ASSIGN_STMT
+			(NAME num)
 			(FLOAT_LITERAL 6.48074)
 		)
-
-		(CALL_STMT print_float
-(NAME num)
+		(CALL_STMT (NAME print_float)
+			(NAME num)
 		)
 
-		(CALL_STMT print_str
-			(STRING_LITERAL  squared is )
+		(CALL_STMT (NAME print_str)
+			(STRING_LITERAL " squared is ")
 		)
 
-		(CALL_STMT print_float
-			(CALL_STMT Square
-(NAME num)
+		(CALL_STMT (NAME print_float)
+			(CALL_STMT (NAME Square)
+				(NAME num)
 			)
 
 		)
 
-		(RETURN)
+		(RETURN_STMT)
 
 	)
 )
