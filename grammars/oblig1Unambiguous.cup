@@ -80,10 +80,12 @@ non terminal Expr               expr;
 non terminal VarExpr            var;
 non terminal List<Expr>         expr_list;
 non terminal List<Expr>         opt_expr_list;
-non terminal BinaryExpr         binary_expr, expr1, expr2, expr3, expr4, expr5, expr6, expr7, expr8, expr9;
+non terminal BinaryExpr         binary_expr, expr1, expr2, expr3, /*expr4,*/ expr5, expr6, expr8, expr9;
 non terminal UnaryExpr          unary_expr;
-non terminal RelOpExpr          rel_op;
-non terminal AritOpExpr         add_sub, mul_div;
+
+/* here's the problem
+non terminal RelOp              rel_op; 
+non terminal AritOp             add_sub, mul_div;
 
 /* Statements */
 non terminal Stmt               stmt;
@@ -182,7 +184,7 @@ expr            ::= binary_expr:e {: RESULT = e; :}
                 |   unary_expr:e {: RESULT = e; :};
 
 binary_expr     ::= rel_op: e {: RESULT = e; :}
-                |   add_sub: e {: RESULT = e; :}  
+                |   add_sub: e {: RESULT = e; :}
 				|	mul_div: e {: RESULT = e; :};
 
 unary_expr      ::= var:v {: RESULT = v; :}
@@ -194,41 +196,41 @@ unary_expr      ::= var:v {: RESULT = v; :}
 
 expr1		::= expr1: e1 LOG_OR expr2:e2 {: RESULT = new LogOpExpr(e1, "||", e2); :}
 		|	expr2: e {:	RESULT=e; :};
-				
+
 expr2		::= expr2:e1 LOG_AND expr3:e2 {: RESULT = new LogOpExpr(e1, "&&", e2); :}
 		|	expr3: e {:	RESULT=e; :};
 
-/* not expr can't be here*/				
+/* not expr can't be here*/
 /*expr3		::= NOT expr3:e {: RESULT = new NotExpr(e); :}
 		|	expr4:e {: RESULT=e :};*/
-				
-expr4		::= expr5:e1 rel_op: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
+
+expr3		::= expr5:e1 rel_op: op expr5:e2 {: RESULT= new RelOpExpr(e1, op, e2); :}
 		|	expr5: e {: RESULT=e :};
-				
+
 expr5		::= expr5:e1 add_sub: op expr6:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
 		|	expr6: e {: RESULT=e :};
-				
+
 expr6		::= expr6:e1 mul_div: op expr8:e2 {: RESULT= new AritOpExpr(e1, op, e2); :}
 		|	expr8: e {: RESULT=e :};
 
 expr8		::= expr8:e1 ARIT_POW expr9:e2 {: RESULT= new AritOpExpr(e1, "#", e2); :}
 		|	expr9: e {: RESULT=e :};
-				
+
 var             ::= ID:name {: RESULT = new VarExpr(name); :}
                 |   expr9:e DOT ID:name {: RESULT = new VarExpr(name, e); :};
-				
-add_sub    	::= ARIT_PLUS {: RESULT = "+"; :}
-                |   ARIT_MINUS {: RESULT = "-"; :};
-				
-mul_div		::= ARIT_MUL {: RESULT = "*"; :}
-                |   ARIT_DIV {: RESULT = "/"; :};
-				
-rel_op		::= REL_EQ {: RESULT = "="; :}
-                |   REL_NEQ {: RESULT = "<>"; :}
-                |   REL_GT {: RESULT = ">"; :}
-                |   REL_GTE {: RESULT = ">="; :}
-                |   REL_LT {: RESULT = "<"; :}
-                |   REL_LTE {: RESULT = "<="; :};
+
+add_sub    	::= ARIT_PLUS
+                |   ARIT_MINUS;
+
+mul_div		::= ARIT_MUL
+                |   ARIT_DIV;
+
+rel_op		::= REL_EQ
+                |   REL_NEQ
+                |   REL_GT
+                |   REL_GTE
+                |   REL_LT
+                |   REL_LTE;
 
 expr_list       ::= expr:e {: List<Expr> el = new LinkedList<Expr>(); el.add(e); RESULT = el; :}
                 |   expr_list:el COMMA expr:e {: el.add(e); RESULT = el; :};
