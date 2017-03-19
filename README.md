@@ -7,12 +7,12 @@
 ## Usage
 Build using `ant build` and run using `ant run`.
 
+<div style="page-break-after: always;"></div>
 ## Design
 We divided the nodes into three main parts: expressions, statements and declarations. The structure can be seen in the picture below.
 ![AST design][ast]
 
-### Conflicts and solutions in grammars
-
+<div style="page-break-after: always;"></div>
 ## AST from Compila.cmp
 ```
 (PROGRAM (NAME ComplexAddition)
