@@ -13,6 +13,6 @@ public class DerefVarExpr extends VarExpr {
 
     @Override
     public String printAst(int depth) {
-        return "(DEREF "+ expr.printAst(depth+1) +")\n";
+        return "(DEREF "+ expr.printAst(depth+1) +")";
     }
 }

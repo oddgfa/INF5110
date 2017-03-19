@@ -26,17 +26,29 @@ public class IfStmt extends Stmt {
         StringBuilder sb = new StringBuilder();
         sb.append(StringUtils.repeat('\t', depth));
         sb.append("(IF_STMT\n");
+        sb.append(StringUtils.repeat('\t', depth+1));
         sb.append(expr.printAst(depth+1));
+        sb.append("\n");
+
+        sb.append(StringUtils.repeat('\t', depth+1));
+        sb.append("(\n");
+
         for (Stmt stmt: thenStmts) {
             sb.append("\t").append(stmt.printAst(depth+1));
-            sb.append("\n");
+            if (sb.charAt(sb.length()-1) != '\n') {
+                sb.append("\n");
+            }
         }
+
+        sb.append(StringUtils.repeat('\t', depth+1));
+        sb.append(")\n");
 
         for (Stmt stmt: elseStmts) {
             sb.append("\t").append(stmt.printAst(depth+1));
-            sb.append("\n");
+            if (sb.charAt(sb.length()-1) != '\n') {
+                sb.append("\n");
+            }
         }
-        sb.append("\n");
         sb.append(StringUtils.repeat('\t', depth));
         sb.append(")\n");
         return sb.toString();

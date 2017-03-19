@@ -21,7 +21,19 @@ public class AssignStmt extends Stmt {
 
     @Override
     public String printAst(int depth) {
-        return StringUtils.repeat('\t', depth) + "(ASSIGN_STMT "+ var.printAst(depth+1) +"\n"+ expr.printAst(depth+1) +"\n"+StringUtils.repeat('\t', depth)+")\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append(StringUtils.repeat('\t', depth));
+        sb.append("(ASSIGN_STMT\n");
+        sb.append(StringUtils.repeat('\t', depth+1));
+        sb.append(var.printAst(depth+1));
+        sb.append("\n");
+        sb.append(StringUtils.repeat('\t', depth+1));
+        sb.append(expr.printAst(depth+1));
+        sb.append("\n");
+        sb.append(StringUtils.repeat('\t', depth));
+        sb.append(")");
+
+        return sb.toString();
     }
 
 }

@@ -11,8 +11,10 @@ public class NullLiteral extends LiteralExpr {
 	public NullLiteral (){
 	
 	}
+
     @Override
-    public String printAst(int depth) {
-	return StringUtils.repeat('\t', depth) + "(NULL_LITERAL)";
+    protected String getAstName() {
+        return "NULL_LITERAL";
     }
+
 }

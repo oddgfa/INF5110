@@ -24,10 +24,11 @@ public abstract class BinaryExpr extends Expr {
     @Override
     public String printAst(int depth) {
         StringBuilder sb = new StringBuilder();
-        sb.append(StringUtils.repeat('\t', depth));
         sb.append("("+ getAstName() +" "+ op +"\n");
+        sb.append(StringUtils.repeat('\t', depth+1));
         sb.append(left.printAst(depth+1));
         sb.append("\n");
+        sb.append(StringUtils.repeat('\t', depth+1));
         sb.append(right.printAst(depth+1));
         sb.append("\n");
         sb.append(StringUtils.repeat('\t', depth));

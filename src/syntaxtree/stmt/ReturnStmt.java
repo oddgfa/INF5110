@@ -22,10 +22,10 @@ public class ReturnStmt extends Stmt {
     @Override
     public String printAst(int depth) {
         if (expr != null) {
-            return StringUtils.repeat('\t', depth) + "(RETURN "+ expr.printAst(depth+1) +")\n";
+            return StringUtils.repeat('\t', depth) + "(RETURN_STMT "+ expr.printAst(depth) +")\n";
         }
 
-        return StringUtils.repeat('\t', depth) + "(RETURN)\n";
+        return StringUtils.repeat('\t', depth) + "(RETURN_STMT)\n";
     }
 
 }

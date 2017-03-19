@@ -13,11 +13,11 @@ public class RefType extends Type {
 
     @Override
     public String get() {
-        return "(REF " + this.type.get() + ")\n";
+        return "(REF " + this.type.get() + ")";
     }
 
     @Override
     public String printAst(int depth) {
-        return StringUtils.repeat('\t', depth) + this.type.get();
+        return "(TYPE " + this.get() + ")";
     }
 }

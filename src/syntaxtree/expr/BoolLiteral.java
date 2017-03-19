@@ -13,8 +13,9 @@ public class BoolLiteral extends LiteralExpr {
 		this.name = name;
 	}
 
-    @Override
-    public String printAst(int depth) {
-	return StringUtils.repeat('\t', depth) + "(BOOL_LITERAL "+ name +")";
-    }
+	@Override
+	protected String getAstName() {
+		return "BOOL_LITERAL " + name;
+	}
+
 }

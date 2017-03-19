@@ -53,6 +53,10 @@ public class ProcDecl extends Decl {
 
     public String printAst(int depth) {
         StringBuilder sb = new StringBuilder();
+
+        if (depth > 1) { // nested procedure
+            sb.append(StringUtils.repeat('\t', depth));
+        }
         sb.append("(PROC_DECL ");
 
         if (returnType != null) {
@@ -69,6 +73,7 @@ public class ProcDecl extends Decl {
                 sb.append(param.printAst(depth+1));
                 sb.append("\n");
             }
+            sb.append("\n");
         }
 
         if (decls.size() > 0) {
@@ -76,6 +81,7 @@ public class ProcDecl extends Decl {
                 sb.append(decl.printAst(depth+1));
                 sb.append("\n");
             }
+            sb.append("\n");
         }
 
         if (stmts.size() > 0) {

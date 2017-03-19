@@ -14,8 +14,9 @@ public class IntLiteral extends LiteralExpr {
 		this.name = name;
 	}
 
-    @Override
-    public String printAst(int depth) {
-	return StringUtils.repeat('\t', depth) + "(INT_LITERAL "+ name +")";
-    }
+	@Override
+	protected String getAstName() {
+		return "INT_LITERAL " + name;
+	}
+
 }

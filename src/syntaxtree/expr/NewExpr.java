@@ -1,6 +1,5 @@
 package syntaxtree.expr;
 
-import syntaxtree.StringUtils;
 import syntaxtree.Type;
 
 /**
@@ -16,6 +15,6 @@ public class NewExpr extends UnaryExpr {
 
     @Override
     public String printAst(int depth) {
-        return StringUtils.repeat('\t', depth) + "(NEW "+ type.printAst(depth+1) +")";
+        return "(NEW "+ type.printAst(depth+1) +")";
     }
 }

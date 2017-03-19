@@ -14,8 +14,9 @@ public class FloatLiteral extends LiteralExpr {
 		this.name = name;
 	}
 
-    @Override
-    public String printAst(int depth) {
-		return StringUtils.repeat('\t', depth) + "(FLOAT_LITERAL "+ name +")";
-    }
+	@Override
+	protected String getAstName() {
+		return "FLOAT_LITERAL " + name;
+	}
+
 }

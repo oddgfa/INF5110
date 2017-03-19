@@ -3,6 +3,7 @@ package syntaxtree.stmt;
 import syntaxtree.Expr;
 import syntaxtree.Stmt;
 import syntaxtree.StringUtils;
+import syntaxtree.expr.CallExpr;
 
 import java.util.List;
 
@@ -23,11 +24,16 @@ public class CallStmt extends Stmt {
     public String printAst(int depth) {
         StringBuilder sb = new StringBuilder();
         sb.append(StringUtils.repeat('\t', depth));
-        sb.append("(CALL_STMT ");
+        sb.append("(CALL_STMT (NAME ");
         sb.append(name);
-        sb.append(" ");
+        sb.append(") ");
         for (Expr expr: exprs) {
             sb.append("\n");
+
+            if (!(expr instanceof CallExpr)) {
+                sb.append(StringUtils.repeat('\t', depth+1));
+            }
+
             sb.append(expr.printAst(depth+1));
         }
         sb.append("\n");
