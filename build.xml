@@ -75,8 +75,8 @@
 
 	<!-- Compile Java Files and store in /build/classes directory  -->
 	<target name="compile" depends="generate">
-		<javac srcdir="${dir.src}" destdir="${dir.classes}" debug="true" includes="**/*.java" classpathref="path-cup" sourcepath="${dir.src-gen}"/>
-		<javac srcdir="${dir.src-gen}" destdir="${dir.classes}" debug="true" includes="**/*.java" classpathref="path-cup" sourcepath="${dir.src}" />
+		<javac includeantruntime="false" srcdir="${dir.src}" destdir="${dir.classes}" debug="true" includes="**/*.java" classpathref="path-cup" sourcepath="${dir.src-gen}"/>
+		<javac includeantruntime="false" srcdir="${dir.src-gen}" destdir="${dir.classes}" debug="true" includes="**/*.java" classpathref="path-cup" sourcepath="${dir.src}" />
 	</target>
 
 	<!-- Main target  -->
@@ -141,4 +141,42 @@
 			<arg value="./input-examples/test-eval.txt"/>
 		</java>
 	</target>
+
+	<!-- Compile test classes -->
+	<target name="compile-test" depends="mkdir">
+		<javac srcdir="${dir.src}" destdir="${dir.classes}" debug="true"
+			   includes="test/*.java" classpathref="path-cup" />
+	</target>
+
+	<!-- Run tests -->
+	<target name="test" depends="compile-test">
+		<java classname="test.Tester" classpathref="path-run" >
+			<arg value="tests"/>
+		</java>
+	</target>
+
+	<!-- Run compiler on example RunMe -->
+	<target name="compile-runme" depends="init">
+		<java classname="compiler.Compiler" classpathref="path-run">
+			<arg value="code-examples/RunMe.cmp"/>
+			<arg value="code-examples/RunMe.ast"/>
+			<arg value="code-examples/RunMe.bin"/>
+		</java>
+	</target>
+
+	<!-- List example RunMe -->
+	<target name="list-runme" depends="init">
+		<java classname="runtime.VirtualMachine" classpathref="path-run">
+			<arg value="-l"/>
+			<arg value="code-examples/RunMe.bin"/>
+		</java>
+	</target>
+
+	<!-- Run vm on example RunMe -->
+	<target name="run-runme" depends="init">
+		<java classname="runtime.VirtualMachine" classpathref="path-run">
+			<arg value="code-examples/RunMe.bin"/>
+		</java>
+	</target>
+
 </project>

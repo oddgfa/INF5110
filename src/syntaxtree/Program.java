@@ -1,5 +1,6 @@
 package syntaxtree;
 
+import bytecode.CodeFile;
 import java.util.List;
 
 public class Program implements PrintAst {
@@ -11,6 +12,10 @@ public class Program implements PrintAst {
     public Program(String name, List<Decl> decls) {
         this.decls = decls;
         this.name = name;
+    }
+
+    public void generateCode(CodeFile file) {
+
     }
 
     public String printAst() {
