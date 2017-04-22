@@ -1,15 +1,15 @@
 package syntaxtree.expr;
 
 import syntaxtree.Expr;
+import java.util.Hashtable;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class VarExpr extends UnaryExpr {
 
-    String name;
+    public String name;
 
     Expr expr;
+
+    String type;
 
     public VarExpr(String name) {
         this.name = name;
@@ -30,5 +30,56 @@ public class VarExpr extends UnaryExpr {
         } else {
             return "(NAME "+ name +")";
         }
+    }
+
+    String getName() {
+        if (expr != null) {
+            if (expr instanceof VarExpr) {
+                return ((VarExpr) expr).getName() +"."+ this.name;
+            }
+
+            return this.name;
+        }
+
+        return this.name;
+    }
+
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    @Override
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public void setType(Hashtable<String, String> types) {
+//        System.out.println("setting type to "+ this.getName());
+//        System.out.println(types);
+
+        String name;
+
+        if (this.getName().contains(".")) {
+            String[] parts = this.getName().split("\\.");
+
+            name = types.get(parts[0]) +"."+ parts[1];
+        } else {
+            name = this.getName();
+        }
+
+        if (!types.containsKey(name)) {
+//            System.out.println("variable not found: "+ name);
+
+            return;
+        } else if (!types.containsKey(this.getName())) {
+            types.put(this.getName(), types.get(name));
+        }
+
+
+        this.type = types.get(this.getName());
+
+        System.out.println(this.getName() +" is "+ this.type);
     }
 }

@@ -3,13 +3,10 @@ package syntaxtree.expr;
 import syntaxtree.Expr;
 import syntaxtree.StringUtils;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public abstract class BinaryExpr extends Expr {
 
     Expr left;
-    String op;
+    private String op;
     Expr right;
 
     public BinaryExpr(Expr left, String op, Expr right) {

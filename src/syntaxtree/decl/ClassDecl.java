@@ -2,7 +2,8 @@ package syntaxtree.decl;
 
 import syntaxtree.Decl;
 import syntaxtree.StringUtils;
-
+import typesystem.TypeError;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,5 +38,23 @@ public class ClassDecl extends Decl {
 
         sb.append(")");
         return sb.toString();
+    }
+
+    @Override
+    public String getType() {
+        return this.name;
+    }
+
+    @Override
+    public void typeCheck(Hashtable<String, String> types, Hashtable<String, ProcDecl> procedures) throws TypeError {
+        for (VarDecl decl: vars) {
+            String name = this.name+"."+decl.name;
+
+            if (types.containsKey(name)) {
+                throw new TypeError("Duplicate symbol "+ name);
+            }
+
+            types.put(name, decl.getType());
+        }
     }
 }

@@ -31,9 +31,9 @@ public class Compiler {
 			throw e; // Or something.
 		}
 		// Check semanics.
-		if(false){ // If it is all ok:
+		if (program.typeCheck()) { // If it is all ok:
 			writeAST(program);
-			generateCode(program);
+//			generateCode(program);
 			return 0;
 		} else if (false){ // If there is a SYNTAX ERROR (Should not get that for the tests):
 			return 1;
@@ -67,6 +67,7 @@ public class Compiler {
 			System.exit(result);
 		} catch (Exception e) {
 			System.out.println("ERROR: " + e);
+			e.printStackTrace();
 			// If unknown error.
 			System.exit(3);
 		}

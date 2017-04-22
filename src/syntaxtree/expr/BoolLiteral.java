@@ -1,13 +1,8 @@
 package syntaxtree.expr;
 
-import syntaxtree.StringUtils;
-
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class BoolLiteral extends LiteralExpr {
 
-	Boolean name;
+	private Boolean name;
 
 	public BoolLiteral (Boolean name){
 		this.name = name;
@@ -16,6 +11,11 @@ public class BoolLiteral extends LiteralExpr {
 	@Override
 	protected String getAstName() {
 		return "BOOL_LITERAL " + name;
+	}
+
+	@Override
+	public String getType() {
+		return "bool";
 	}
 
 }

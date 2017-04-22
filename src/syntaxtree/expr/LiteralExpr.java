@@ -1,11 +1,7 @@
 package syntaxtree.expr;
 
-import syntaxtree.StringUtils;
-import syntaxtree.Type;
+import java.util.Hashtable;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public abstract class LiteralExpr extends UnaryExpr {
 
     abstract protected String getAstName();
@@ -13,6 +9,16 @@ public abstract class LiteralExpr extends UnaryExpr {
     @Override
     public String printAst(int depth) {
         return "("+getAstName()+")";
+    }
+
+    @Override
+    public void setType(String type) {
+        // literals have type on their own
+    }
+
+    @Override
+    public void setType(Hashtable<String, String> types) {
+        // literals have type on their own
     }
 
 }

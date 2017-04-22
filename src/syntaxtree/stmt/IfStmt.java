@@ -3,15 +3,14 @@ package syntaxtree.stmt;
 import syntaxtree.Expr;
 import syntaxtree.Stmt;
 import syntaxtree.StringUtils;
-
+import syntaxtree.decl.ProcDecl;
+import typesystem.TypeError;
+import java.util.Hashtable;
 import java.util.List;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class IfStmt extends Stmt {
 
-    Expr expr;
+    private Expr expr;
     private final List<Stmt> thenStmts;
     private final List<Stmt> elseStmts;
 
@@ -53,6 +52,20 @@ public class IfStmt extends Stmt {
         sb.append(")\n");
         return sb.toString();
 
+    }
+
+    @Override
+    public void typeCheck(Hashtable<String, String> types, Hashtable<String, ProcDecl> procedures) throws TypeError {
+        this.expr.setType(types);
+
+        if (!getType().equals("bool")) {
+            throw new TypeError("If condition must be boolean, "+expr.getType()+" given.");
+        }
+    }
+
+    @Override
+    public String getType() {
+        return expr.getType();
     }
 
 }

@@ -1,9 +1,9 @@
 package syntaxtree;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
-abstract public class Decl extends Node {
+import typesystem.TypeAware;
+import typesystem.TypeCheck;
+
+abstract public class Decl extends Node implements TypeAware, TypeCheck {
 
     public String name;
 

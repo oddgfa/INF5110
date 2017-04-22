@@ -3,16 +3,17 @@ package syntaxtree.stmt;
 import syntaxtree.Expr;
 import syntaxtree.Stmt;
 import syntaxtree.StringUtils;
+import syntaxtree.decl.ProcDecl;
 import syntaxtree.expr.VarExpr;
+import typesystem.TypeChecker;
+import typesystem.TypeError;
+import java.util.Hashtable;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class AssignStmt extends Stmt {
 
-    VarExpr var;
+    private VarExpr var;
 
-    Expr expr;
+    private Expr expr;
 
     public AssignStmt(VarExpr var, Expr expr) {
         this.var = var;
@@ -34,6 +35,21 @@ public class AssignStmt extends Stmt {
         sb.append(")");
 
         return sb.toString();
+    }
+
+    @Override
+    public void typeCheck(Hashtable<String, String> types, Hashtable<String, ProcDecl> procedures) throws TypeError {
+        var.setType(types);
+        expr.setType(types);
+
+        if (!TypeChecker.isValid(var.getType(), expr.getType())) {
+            throw new TypeError(expr.getType() +" cannot be assigned to "+ var.getType());
+        }
+    }
+
+    @Override
+    public String getType() {
+        return var.getType();
     }
 
 }

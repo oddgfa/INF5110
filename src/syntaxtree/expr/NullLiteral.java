@@ -1,20 +1,19 @@
 package syntaxtree.expr;
 
-import syntaxtree.StringUtils;
-import syntaxtree.Type;
-
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class NullLiteral extends LiteralExpr {
 
-	public NullLiteral (){
-	
+	public NullLiteral() {
+
 	}
 
     @Override
     protected String getAstName() {
         return "NULL_LITERAL";
+    }
+
+    @Override
+    public String getType() {
+        return "null";
     }
 
 }

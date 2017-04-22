@@ -4,7 +4,9 @@ import syntaxtree.Decl;
 import syntaxtree.Stmt;
 import syntaxtree.StringUtils;
 import syntaxtree.Type;
-
+import syntaxtree.stmt.ReturnStmt;
+import typesystem.TypeError;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +51,10 @@ public class ProcDecl extends Decl {
         this.decls = decls;
         this.stmts = stmts;
         this.returnType = returnType;
+    }
+
+    public List<ParamDecl> getParams() {
+        return this.params;
     }
 
     public String printAst(int depth) {
@@ -96,4 +102,48 @@ public class ProcDecl extends Decl {
 
         return sb.toString();
     }
+
+    @Override
+    public String getType() {
+        return this.returnType == null ? "void" : this.returnType.get();
+    }
+
+    public void typeCheck(Hashtable<String, String> types, Hashtable<String, ProcDecl> procedures) throws TypeError {
+        procedures.put(this.name, this);
+
+        for (ParamDecl param : params) {
+            if (types.containsKey(param.name)) {
+                throw new TypeError("Duplicate parameter "+ param.name +" in procedure "+ this.name);
+            }
+
+            types.put(param.name, param.getType());
+        }
+
+        for (Decl decl : decls) {
+            if (types.containsKey(decl.name)) {
+                throw new TypeError("Duplicate declaration of "+ decl.name +" in procedure "+ this.name);
+            }
+
+            types.put(decl.name, decl.getType());
+            decl.typeCheck(types, procedures);
+        }
+
+        for (Stmt stmt : stmts) {
+            if (stmt instanceof ReturnStmt) {
+                ((ReturnStmt) stmt).setExpectedType(this.getType());
+            }
+
+            stmt.typeCheck(types, procedures);
+        }
+
+        // pop out when type checking ok
+        for (ParamDecl param : params) {
+            types.put(this.name +"."+ param.name, types.remove(param.name));
+        }
+
+//        for (Decl decl : decls) {
+//            types.remove(decl.name);
+//        }
+    }
+
 }

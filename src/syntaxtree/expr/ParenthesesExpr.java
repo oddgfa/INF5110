@@ -2,10 +2,10 @@ package syntaxtree.expr;
 
 import syntaxtree.Expr;
 import syntaxtree.StringUtils;
+import typesystem.TypeError;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
+import java.util.Hashtable;
+
 public class ParenthesesExpr extends UnaryExpr {
 
     Expr expr;
@@ -26,4 +26,20 @@ public class ParenthesesExpr extends UnaryExpr {
 
         return sb.toString();
     }
+
+    @Override
+    public String getType() {
+        return expr.getType();
+    }
+
+    @Override
+    public void setType(String type) throws TypeError {
+        expr.setType(type);
+    }
+
+    @Override
+    public void setType(Hashtable<String, String> types) throws TypeError {
+        expr.setType(types);
+    }
+
 }

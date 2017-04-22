@@ -1,10 +1,8 @@
 package syntaxtree.expr;
 
 import syntaxtree.Type;
+import java.util.Hashtable;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class NewExpr extends UnaryExpr {
 
     Type type;
@@ -17,4 +15,20 @@ public class NewExpr extends UnaryExpr {
     public String printAst(int depth) {
         return "(NEW "+ type.printAst(depth+1) +")";
     }
+
+    @Override
+    public String getType() {
+        return type.get();
+    }
+
+    @Override
+    public void setType(String type) {
+
+    }
+
+    @Override
+    public void setType(Hashtable<String, String> types) {
+
+    }
+
 }

@@ -1,13 +1,11 @@
 package syntaxtree.expr;
 
 import syntaxtree.StringUtils;
+import java.util.Hashtable;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class RefExpr extends UnaryExpr {
 
-    VarExpr var;
+    private VarExpr var;
 
     public RefExpr(VarExpr var) {
         this.var = var;
@@ -17,4 +15,20 @@ public class RefExpr extends UnaryExpr {
     public String printAst(int depth) {
         return StringUtils.repeat('\t', depth) + "(REF "+ var.name +")";
     }
+
+    @Override
+    public String getType() {
+        return "ref_"+var.getName();
+    }
+
+    @Override
+    public void setType(String type) {
+
+    }
+
+    @Override
+    public void setType(Hashtable<String, String> types) {
+        var.setType(types);
+    }
+
 }

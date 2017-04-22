@@ -1,14 +1,8 @@
 package syntaxtree.expr;
 
-import syntaxtree.StringUtils;
-import syntaxtree.Type;
-
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class IntLiteral extends LiteralExpr {
 
-	Integer name;
+	private Integer name;
 
 	public IntLiteral (Integer name){
 		this.name = name;
@@ -17,6 +11,11 @@ public class IntLiteral extends LiteralExpr {
 	@Override
 	protected String getAstName() {
 		return "INT_LITERAL " + name;
+	}
+
+	@Override
+	public String getType() {
+		return "int";
 	}
 
 }

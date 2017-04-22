@@ -2,10 +2,8 @@ package syntaxtree.expr;
 
 import syntaxtree.Expr;
 import syntaxtree.StringUtils;
+import java.util.Hashtable;
 
-/**
- * Created by pjurasek on 28.02.17.
- */
 public class NotExpr extends UnaryExpr {
 
     Expr expr;
@@ -26,4 +24,20 @@ public class NotExpr extends UnaryExpr {
 
         return sb.toString();
     }
+
+    @Override
+    public String getType() {
+        return "bool";
+    }
+
+    @Override
+    public void setType(String type) {
+        // has type on its own
+    }
+
+    @Override
+    public void setType(Hashtable<String, String> types) {
+        // has type on its own
+    }
+
 }
