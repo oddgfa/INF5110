@@ -84,9 +84,10 @@
 
 	<!-- Run the system  -->
 	<target name="run" depends="init">
-		<java classname="compiler.Compiler" classpathref="path-run">
+		<java classname="compiler.Compiler" classpathref="path-run" fork="true">
 			<arg value="compila-code/Compila.cmp"/>
 			<arg value="compila-ast/Compila.ast"/>
+			<arg value="compila-bin/Compila.bin"/>
 		</java>
 	</target>
 
