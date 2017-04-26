@@ -2,6 +2,8 @@ package syntaxtree.expr;
 
 import syntaxtree.Expr;
 import syntaxtree.StringUtils;
+import typesystem.TypeError;
+
 import java.util.Hashtable;
 
 public class NotExpr extends UnaryExpr {
@@ -36,8 +38,12 @@ public class NotExpr extends UnaryExpr {
     }
 
     @Override
-    public void setType(Hashtable<String, String> types) {
-        // has type on its own
+    public void setType(Hashtable<String, String> types) throws TypeError {
+        this.expr.setType(types);
+
+        if (!this.expr.getType().equals("bool")) {
+            throw new TypeError("Not: operand type must be bool, "+ this.expr.getType() +" given.");
+        }
     }
 
 }

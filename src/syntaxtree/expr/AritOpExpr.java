@@ -7,6 +7,8 @@ import java.util.Hashtable;
 
 public class AritOpExpr extends BinaryExpr {
 
+    private String type;
+
     public AritOpExpr(Expr left, String op, Expr right) {
         super(left, op, right);
     }
@@ -18,7 +20,7 @@ public class AritOpExpr extends BinaryExpr {
 
     @Override
     public String getType() {
-        return left.getType();
+        return this.type;
     }
 
     @Override
@@ -31,9 +33,25 @@ public class AritOpExpr extends BinaryExpr {
         left.setType(types);
         right.setType(types);
 
-        if (!TypeChecker.isValid(left.getType(), right.getType())) {
-            throw new TypeError("Invalid arithmetic operation arguments: "+ left.getType() +" and "+ right.getType());
+        String[] allowed = {"float", "int"};
+
+        if (!TypeChecker.isOneOf(left.getType(), allowed)) {
+            throw new TypeError("LHS of arithmetic operation must be int or float, "+ left.getType() +" given.");
         }
+
+        if (!TypeChecker.isOneOf(right.getType(), allowed)) {
+            throw new TypeError("RHS of arithmetic operation must be int or float, "+ right.getType() +" given.");
+        }
+
+        if (left.getType().equals("float") || right.getType().equals("float") || this.op.equals("#")) {
+            this.type = "float";
+        } else {
+            this.type = "int";
+        }
+
+//        if (!TypeChecker.isValid(left.getType(), right.getType())) {
+//            throw new TypeError("Invalid arithmetic operation arguments: "+ left.getType() +" and "+ right.getType());
+//        }
     }
 
 }

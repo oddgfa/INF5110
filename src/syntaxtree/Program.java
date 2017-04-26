@@ -47,12 +47,18 @@ public class Program implements PrintAst {
         Hashtable<String, String> types = new Hashtable<>();
         Hashtable<String, ProcDecl> procedures = new Hashtable<>();
 
+        types.put("printint", "void");
+        types.put("printfloat", "void");
         types.put("print_float", "void");
         types.put("print_str", "void");
 
+        ProcDecl printint = new ProcDecl("printint", Collections.singletonList(new ParamDecl("int", new Type("int"))));
+        ProcDecl printfloat = new ProcDecl("printfloat", Collections.singletonList(new ParamDecl("float", new Type("float"))));
         ProcDecl print_float = new ProcDecl("print_float", Collections.singletonList(new ParamDecl("float", new Type("float"))));
         ProcDecl print_str = new ProcDecl("print_str", Collections.singletonList(new ParamDecl("string", new Type("string"))));
 
+        procedures.put("printint", printint);
+        procedures.put("printfloat", printfloat);
         procedures.put("print_float", print_float);
         procedures.put("print_str", print_str);
 

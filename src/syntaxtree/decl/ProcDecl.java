@@ -5,6 +5,7 @@ import syntaxtree.Stmt;
 import syntaxtree.StringUtils;
 import syntaxtree.Type;
 import syntaxtree.stmt.ReturnStmt;
+import typesystem.TypeChecker;
 import typesystem.TypeError;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -111,6 +112,16 @@ public class ProcDecl extends Decl {
     public void typeCheck(Hashtable<String, String> types, Hashtable<String, ProcDecl> procedures) throws TypeError {
         procedures.put(this.name, this);
 
+        if (this.name.equals("Main")) {
+            if (this.params.size() > 0) {
+                throw new TypeError("Main procedure doesn't accept any parameter.");
+            }
+
+            if (!this.getType().equals("void")) {
+                throw new TypeError("Main procedure can't return anyting but void.");
+            }
+        }
+
         for (ParamDecl param : params) {
             if (types.containsKey(param.name)) {
                 throw new TypeError("Duplicate parameter "+ param.name +" in procedure "+ this.name);
@@ -128,18 +139,31 @@ public class ProcDecl extends Decl {
             decl.typeCheck(types, procedures);
         }
 
+        ReturnStmt foundReturnStatement = null;
+
         for (Stmt stmt : stmts) {
             if (stmt instanceof ReturnStmt) {
+                foundReturnStatement = (ReturnStmt) stmt;
                 ((ReturnStmt) stmt).setExpectedType(this.getType());
             }
 
             stmt.typeCheck(types, procedures);
         }
 
+        if (this.returnType != null && foundReturnStatement == null) {
+            throw new TypeError("Procedure "+ this.name +" should return "+ this.getType() +" but there is no return statement.");
+        }
+
+        if (this.returnType != null && !TypeChecker.isPrimitive(this.returnType.get()) && !types.containsKey(this.returnType.get())) {
+            throw new TypeError("Unknown return type "+ this.returnType.get());
+        }
+
         // pop out when type checking ok
         for (ParamDecl param : params) {
             types.put(this.name +"."+ param.name, types.remove(param.name));
         }
+
+        types.put(this.name, this.getType());
 
 //        for (Decl decl : decls) {
 //            types.remove(decl.name);

@@ -80,6 +80,6 @@ public class VarExpr extends UnaryExpr {
 
         this.type = types.get(this.getName());
 
-        System.out.println(this.getName() +" is "+ this.type);
+//        System.out.println(this.getName() +" is "+ this.type);
     }
 }
