@@ -1,6 +1,8 @@
 package syntaxtree.expr;
 
 import syntaxtree.stmt.CallStmt;
+import typesystem.TypeError;
+
 import java.util.Hashtable;
 
 public class CallExpr extends UnaryExpr {

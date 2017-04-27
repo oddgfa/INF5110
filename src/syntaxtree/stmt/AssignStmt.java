@@ -4,6 +4,7 @@ import syntaxtree.Expr;
 import syntaxtree.Stmt;
 import syntaxtree.StringUtils;
 import syntaxtree.decl.ProcDecl;
+import syntaxtree.expr.CallExpr;
 import syntaxtree.expr.VarExpr;
 import typesystem.TypeChecker;
 import typesystem.TypeError;
@@ -40,9 +41,23 @@ public class AssignStmt extends Stmt {
     @Override
     public void typeCheck(Hashtable<String, String> types, Hashtable<String, ProcDecl> procedures) throws TypeError {
         var.setType(types);
-        expr.setType(types);
 
-        if (!TypeChecker.isValid(var.getType(), expr.getType())) {
+        if (expr instanceof CallExpr) {
+            ((CallExpr) expr).getCallStmt().typeCheck(types, procedures);
+        } else {
+            expr.setType(types);
+        }
+
+        if (var.getType() == null) {
+            throw new TypeError("Undeclared variable "+ var.name);
+        }
+
+        if (expr.getType() == null) {
+            System.out.println(types);
+            throw new TypeError("Unknown type for "+ expr.printAst(0));
+        }
+
+        if (!TypeChecker.isValidAssignment(var.getType(), expr.getType())) {
             throw new TypeError(expr.getType() +" cannot be assigned to "+ var.getType());
         }
     }

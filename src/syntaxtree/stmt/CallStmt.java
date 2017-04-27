@@ -58,6 +58,10 @@ public class CallStmt extends Stmt {
 
         List<ParamDecl> params = procedure.getParams();
 
+        if (params.size() != this.exprs.size()) {
+            throw new TypeError(this.name +": argument count mismatch. "+ params.size() +" expected, "+ this.exprs.size() +" given.");
+        }
+
         int i = 0;
         for (Expr expr : exprs) {
             expr.setType(types);
@@ -66,16 +70,14 @@ public class CallStmt extends Stmt {
                 ((CallExpr) expr).getCallStmt().typeCheck(types, procedures);
             }
 
-            if (!TypeChecker.isValid(params.get(i).getType(), expr.getType())) {
+            if (!TypeChecker.isValidAssignment(params.get(i).getType(), expr.getType())) {
                 throw new TypeError(this.name +": Parameter "+ (i+1) +" must be of type "+ params.get(i).getType() +", "+ expr.getType() +" given.");
             }
 
             i++;
         }
 
-        this.type = types.get(this.name);
-
-
+        this.type = procedure.getType();
     }
 
     @Override

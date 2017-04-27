@@ -6,7 +6,7 @@ import syntaxtree.StringUtils;
 public abstract class BinaryExpr extends Expr {
 
     Expr left;
-    private String op;
+    String op;
     Expr right;
 
     public BinaryExpr(Expr left, String op, Expr right) {
