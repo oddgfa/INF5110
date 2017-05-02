@@ -52,15 +52,9 @@ public class ParamDecl extends Decl implements TypeAware {
       if(type.get().equals("void")){
         codeprocedure.addParameter(name, VoidType.TYPE);
       }
-
-      codefile.updateProcedure(codeprocedure);
     }
 
     @Override
     public void generateCode(CodeFile codefile){
-
     }
-
-
-
 }
