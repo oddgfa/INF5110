@@ -188,7 +188,7 @@ public class ProcDecl extends Decl {
       }
 
       for(Stmt stmt:stmts){
-        stmt.generateCode(codeprocedure);
+        //stmt.generateCode(codeprocedure);
       }
 
   		codefile.updateProcedure(codeprocedure);

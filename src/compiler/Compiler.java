@@ -33,7 +33,7 @@ public class Compiler {
 		// Check semanics.
 		if (program.typeCheck()) { // If it is all ok:
 			writeAST(program);
-//			generateCode(program);
+			generateCode(program);
 			return 0;
 		} else if (false){ // If there is a SYNTAX ERROR (Should not get that for the tests):
 			return 1;

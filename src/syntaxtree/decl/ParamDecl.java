@@ -14,7 +14,6 @@ import bytecode.type.*;
 public class ParamDecl extends Decl implements TypeAware {
 
     private Type type;
-    String name;
 
     public ParamDecl(String name, Type type) {
         super(name);
