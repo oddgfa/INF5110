@@ -6,6 +6,9 @@ import syntaxtree.StringUtils;
 import syntaxtree.decl.ProcDecl;
 import typesystem.TypeChecker;
 import typesystem.TypeError;
+import bytecode.CodeFile;
+import bytecode.CodeProcedure;
+import bytecode.CodeStruct;
 import java.util.Hashtable;
 
 public class ReturnStmt extends Stmt {
@@ -50,5 +53,8 @@ public class ReturnStmt extends Stmt {
             throw new TypeError(this.expectedType +" should be returned, "+ this.getType() +" given.");
         }
     }
+
+    @Override
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {}
 
 }

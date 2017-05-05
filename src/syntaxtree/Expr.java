@@ -2,9 +2,10 @@ package syntaxtree;
 
 import typesystem.TypeAware;
 import typesystem.TypeError;
-import bytecode.CodeProcedure;
 import bytecode.CodeFile;
+import bytecode.CodeProcedure;
 import bytecode.CodeStruct;
+
 import java.util.Hashtable;
 
 abstract public class Expr extends Node implements TypeAware {

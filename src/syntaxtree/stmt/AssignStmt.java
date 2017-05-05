@@ -8,6 +8,9 @@ import syntaxtree.expr.CallExpr;
 import syntaxtree.expr.VarExpr;
 import typesystem.TypeChecker;
 import typesystem.TypeError;
+import bytecode.CodeFile;
+import bytecode.CodeProcedure;
+import bytecode.CodeStruct;
 import java.util.Hashtable;
 
 public class AssignStmt extends Stmt {
@@ -65,6 +68,11 @@ public class AssignStmt extends Stmt {
     @Override
     public String getType() {
         return var.getType();
+    }
+
+    @Override
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {
+
     }
 
 }

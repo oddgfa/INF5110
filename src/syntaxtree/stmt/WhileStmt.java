@@ -5,6 +5,9 @@ import syntaxtree.Stmt;
 import syntaxtree.StringUtils;
 import syntaxtree.decl.ProcDecl;
 import typesystem.TypeError;
+import bytecode.CodeFile;
+import bytecode.CodeProcedure;
+import bytecode.CodeStruct;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -48,5 +51,8 @@ public class WhileStmt extends Stmt {
     public String getType() {
         return expr.getType();
     }
+
+    @Override
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {}
 
 }

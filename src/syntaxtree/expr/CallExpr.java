@@ -41,7 +41,7 @@ public class CallExpr extends UnaryExpr {
 
     @Override
     public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
-      //callStmt.generateCode(cf, cp, null);
+        callStmt.generateCode(cf, cp, null);
     }
 
 }

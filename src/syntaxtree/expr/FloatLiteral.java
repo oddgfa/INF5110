@@ -26,5 +26,4 @@ public class FloatLiteral extends LiteralExpr {
 	public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
 		cp.addInstruction(new PUSHFLOAT(name));
 	}
-
 }
