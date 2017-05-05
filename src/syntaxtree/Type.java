@@ -1,16 +1,7 @@
 package syntaxtree;
 import bytecode.CodeFile;
-import bytecode.CodeProcedure;
-import bytecode.type.CodeType;
-import bytecode.type.BoolType;
-import bytecode.type.FloatType;
-import bytecode.type.IntType;
-import bytecode.type.RefType;
-import bytecode.type.StringType;
-import bytecode.type.VoidType;
-/**
- * Created by pjurasek on 28.02.17.
- */
+import bytecode.type.*;
+
 public class Type extends Node {
 
     private Name name;
@@ -39,5 +30,16 @@ public class Type extends Node {
     public String printAst(int depth) {
         return "(TYPE " + this.get() + ")";
     }
+
+    public CodeType getByteType(CodeFile cf) {
+        switch (get()) {
+            case "int":     return IntType.TYPE;
+            case "float":   return FloatType.TYPE;
+            case "string":  return StringType.TYPE;
+            case "bool":    return BoolType.TYPE;
+            case "void":    return VoidType.TYPE;
+            default:        return new bytecode.type.RefType(cf.structNumber(get()));
+        }
+}
 
 }
