@@ -4,6 +4,8 @@ import syntaxtree.Expr;
 import syntaxtree.StringUtils;
 import typesystem.TypeError;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 import java.util.Hashtable;
 
 public class ParenthesesExpr extends UnaryExpr {
@@ -43,8 +45,8 @@ public class ParenthesesExpr extends UnaryExpr {
     }
 
     @Override
-    public void generateCode(CodeProcedure codeprocedure){
-      expr.generateCode(codeprocedure);
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+      expr.generateCode(cf, cp, null);
     }
 
 }

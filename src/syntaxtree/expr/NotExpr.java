@@ -5,6 +5,8 @@ import syntaxtree.StringUtils;
 import typesystem.TypeError;
 import bytecode.instructions.*;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 import java.util.Hashtable;
 
 public class NotExpr extends UnaryExpr {
@@ -48,9 +50,9 @@ public class NotExpr extends UnaryExpr {
     }
 
     @Override
-    public void generateCode(CodeProcedure codeprocedure){
-      expr.generateCode(codeprocedure);
-      codeprocedure.addInstruction(new NOT());
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+      expr.generateCode(cf, cp, null);
+      cp.addInstruction(new NOT());
     }
 
 

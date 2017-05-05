@@ -1,5 +1,7 @@
 package syntaxtree.expr;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 import bytecode.instructions.PUSHSTRING;
 
 public class StringLiteral extends LiteralExpr {
@@ -21,9 +23,9 @@ public class StringLiteral extends LiteralExpr {
 	}
 
 	@Override
-	public void generateCode(CodeProcedure codeprocedure){
-		int i=codeprocedure.addStringConstant(name);
-		codeprocedure.addInstruction(new PUSHSTRING(i));
+	public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+		int i = cp.addStringConstant(name);
+		cp.addInstruction(new PUSHSTRING(i));
 	}
 
 }

@@ -4,6 +4,8 @@ import syntaxtree.Type;
 import java.util.Hashtable;
 import bytecode.instructions.*;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 
 public class NewExpr extends UnaryExpr {
 
@@ -34,9 +36,9 @@ public class NewExpr extends UnaryExpr {
     }
 
     @Override
-    public void generateCode(CodeProcedure codeprocedure){
-      int structNum=codeprocedure.structNumber(type.get());
-      codeprocedure.addInstruction(new NEW(structNum));
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+      int structNum = cp.structNumber(type.get());
+      cp.addInstruction(new NEW(structNum));
     }
 
 }

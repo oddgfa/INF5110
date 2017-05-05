@@ -1,5 +1,7 @@
 package syntaxtree.expr;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 import bytecode.instructions.PUSHINT;
 
 public class IntLiteral extends LiteralExpr {
@@ -21,8 +23,8 @@ public class IntLiteral extends LiteralExpr {
 	}
 
 	@Override
-	public void generateCode(CodeProcedure codeprocedure){
-		codeprocedure.addInstruction(new PUSHINT(name));
+	public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+		cp.addInstruction(new PUSHINT(name));
 	}
 
 }

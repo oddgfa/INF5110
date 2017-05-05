@@ -1,6 +1,8 @@
 package syntaxtree.expr;
 import bytecode.instructions.*;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 public class NullLiteral extends LiteralExpr {
 
 	public NullLiteral() {
@@ -18,7 +20,7 @@ public class NullLiteral extends LiteralExpr {
     }
 
 		@Override
-		public void generateCode(CodeProcedure codeprocedure){
-			codeprocedure.addInstruction(new PUSHNULL());
+		public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+			cp.addInstruction(new PUSHNULL());
 		}
 }

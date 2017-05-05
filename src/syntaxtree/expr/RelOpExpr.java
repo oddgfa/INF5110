@@ -5,6 +5,8 @@ import typesystem.TypeChecker;
 import typesystem.TypeError;
 import bytecode.instructions.*;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 
 import java.util.Hashtable;
 
@@ -49,26 +51,26 @@ public class RelOpExpr extends BinaryExpr {
     }
 
     @Override
-    public void generateCode(CodeProcedure codeprocedure){
-      left.generateCode(codeprocedure);
-      right.generateCode(codeprocedure);
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+      left.generateCode(cf, cp, null);
+      right.generateCode(cf, cp, null);
       if(op.equals("=")){
-        codeprocedure.addInstruction(new EQ());
+        cp.addInstruction(new EQ());
       }
       if(op.equals("<>")){
-        codeprocedure.addInstruction(new NEQ());
+        cp.addInstruction(new NEQ());
       }
       if(op.equals("<")){
-        codeprocedure.addInstruction(new LT());
+        cp.addInstruction(new LT());
       }
       if(op.equals("<=")){
-        codeprocedure.addInstruction(new LTEQ());
+        cp.addInstruction(new LTEQ());
       }
       if(op.equals(">")){
-        codeprocedure.addInstruction(new GT());
+        cp.addInstruction(new GT());
       }
       if(op.equals(">=")){
-        codeprocedure.addInstruction(new GTEQ());
+        cp.addInstruction(new GTEQ());
       }
     }
 

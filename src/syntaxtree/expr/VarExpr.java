@@ -2,6 +2,9 @@ package syntaxtree.expr;
 
 import syntaxtree.Expr;
 import java.util.Hashtable;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
+import bytecode.CodeProcedure;
 
 public class VarExpr extends UnaryExpr {
 
@@ -82,4 +85,6 @@ public class VarExpr extends UnaryExpr {
 
 //        System.out.println(this.getName() +" is "+ this.type);
     }
+
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){}
 }

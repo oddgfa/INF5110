@@ -11,6 +11,8 @@ import typesystem.TypeError;
 import java.util.Hashtable;
 import java.util.List;
 import bytecode.CodeProcedure;
+import bytecode.CodeFile;
+import bytecode.CodeStruct;
 
 public class CallStmt extends Stmt {
 
@@ -84,10 +86,5 @@ public class CallStmt extends Stmt {
     @Override
     public String getType() {
         return this.type;
-    }
-
-    @Override
-    public void generateCode(CodeProcedure codeprocedure){
-
     }
 }
