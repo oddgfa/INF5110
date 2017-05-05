@@ -41,7 +41,6 @@ public class VarDecl extends Decl implements TypeAware {
     public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
         if (cp != null) {
             cp.addLocalVariable(name, type.getByteType(cf));
-            cf.updateProcedure(cp);
         } else if (cs != null) {
             cs.addVariable(name, type.getByteType(cf));
         } else {
