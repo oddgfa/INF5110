@@ -4,6 +4,7 @@ import typesystem.TypeAware;
 import typesystem.TypeCheck;
 import bytecode.CodeFile;
 import bytecode.CodeProcedure;
+import bytecode.CodeStruct;
 
 public abstract class Decl extends Node implements TypeAware, TypeCheck {
 
@@ -13,8 +14,5 @@ public abstract class Decl extends Node implements TypeAware, TypeCheck {
         this.name = name;
     }
 
-    public abstract void generateCode(CodeFile codefile);
-    public abstract void generateCode(CodeProcedure codeprocedure);
-
-
+    public abstract void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs);
 }

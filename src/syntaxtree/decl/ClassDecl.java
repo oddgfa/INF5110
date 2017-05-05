@@ -63,18 +63,13 @@ public class ClassDecl extends Decl {
     }
 
     @Override
-    public void generateCode(CodeFile codefile){
-      codefile.addStruct(name);
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
+      cf.addStruct(name);
 
-      CodeStruct codestruct= new CodeStruct(name);
+      CodeStruct newStruct = new CodeStruct(name);
       for(VarDecl decl: vars){
-        decl.generateCode(codestruct, codefile);
+        decl.generateCode(null, null, newStruct);
       }
-      codefile.updateStruct(codestruct);
-    }
-
-    @Override
-    public void generateCode(CodeProcedure codeprocedure){
-
+      cf.updateStruct(newStruct);
     }
 }

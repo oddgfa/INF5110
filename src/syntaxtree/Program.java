@@ -22,9 +22,9 @@ public class Program implements PrintAst {
 
     public void generateCode(CodeFile codefile) {
       for(Decl decl: decls){
-        decl.generateCode(codefile);
+        decl.generateCode(codefile, null, null);
       }
-      
+
     }
 
     public String printAst() {
