@@ -193,7 +193,7 @@ public class ProcDecl extends Decl {
         }
 
         for(Stmt stmt:stmts){
-            //stmt.generateCode(cf, newProc, null);
+            stmt.generateCode(cf, newProc, null);
         }
 
         cf.updateProcedure(newProc);

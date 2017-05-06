@@ -11,6 +11,8 @@ import typesystem.TypeError;
 import bytecode.CodeFile;
 import bytecode.CodeProcedure;
 import bytecode.CodeStruct;
+import bytecode.instructions.STORELOCAL;
+import bytecode.instructions.STOREGLOBAL;
 import java.util.Hashtable;
 
 public class AssignStmt extends Stmt {
@@ -72,7 +74,14 @@ public class AssignStmt extends Stmt {
 
     @Override
     public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {
-
+        expr.generateCode(cf, cp, cs);
+        if (cp.variableNumber(var.name) != -1) {
+            cp.addInstruction(new STORELOCAL(cp.variableNumber(var.name)));
+        } else if (cp.globalVariableNumber(var.name) != -1) {
+            cp.addInstruction(new STOREGLOBAL(cp.globalVariableNumber(var.name)));
+        } else {
+            System.out.println("Could not find variable.");
+        }
     }
 
 }
