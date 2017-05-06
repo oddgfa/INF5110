@@ -9,6 +9,7 @@ import typesystem.TypeError;
 import bytecode.CodeFile;
 import bytecode.CodeProcedure;
 import bytecode.CodeStruct;
+import bytecode.instructions.RETURN;
 import java.util.Hashtable;
 
 public class ReturnStmt extends Stmt {
@@ -55,6 +56,11 @@ public class ReturnStmt extends Stmt {
     }
 
     @Override
-    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {}
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {
+        if (expr != null) {
+            expr.generateCode(cf, cp, cs);
+        }
+        cp.addInstruction(new RETURN());
+    }
 
 }

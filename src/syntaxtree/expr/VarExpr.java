@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import bytecode.CodeFile;
 import bytecode.CodeStruct;
 import bytecode.CodeProcedure;
+import bytecode.instructions.LOADLOCAL;
+import bytecode.instructions.LOADGLOBAL;
 
 public class VarExpr extends UnaryExpr {
 
@@ -87,5 +89,10 @@ public class VarExpr extends UnaryExpr {
     }
 
     @Override
-    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){}
+    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {
+        if (expr != null) {
+            expr.generateCode(cf, cp, cs);
+        }
+        cp.addInstruction(new LOADLOCAL(cp.variableNumber(name)));
+    }
 }

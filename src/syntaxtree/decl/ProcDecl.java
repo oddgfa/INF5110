@@ -182,7 +182,13 @@ public class ProcDecl extends Decl {
     public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
         cf.addProcedure(name);
 
-        CodeProcedure newProc = new CodeProcedure(name, VoidType.TYPE, cf);
+        CodeProcedure newProc;
+
+        if (returnType != null) {
+            newProc = new CodeProcedure(name, returnType.getByteType(cf), cf);
+        } else {
+            newProc = new CodeProcedure(name, VoidType.TYPE, cf);
+        }
 
         for(ParamDecl paramdecl: params){
             paramdecl.generateCode(cf, newProc, null);
@@ -193,7 +199,7 @@ public class ProcDecl extends Decl {
         }
 
         for(Stmt stmt:stmts){
-            //stmt.generateCode(cf, newProc, null);
+            stmt.generateCode(cf, newProc, null);
         }
 
         cf.updateProcedure(newProc);
