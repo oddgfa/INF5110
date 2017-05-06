@@ -17,7 +17,7 @@
 			(INT_LITERAL 5)
 		)
 		(WHILE_STMT
-			(PARENTHESES 
+			(PARENTHESES
 (REL_OP >
 					(NAME i)
 					(INT_LITERAL 0)
@@ -38,7 +38,9 @@
 				(NAME i)
 				(INT_LITERAL 10)
 			)
+
 		)
+
 		(ASSIGN_STMT
 			(NAME i)
 			(ARIT_OP -
@@ -65,7 +67,7 @@
 			(BOOL_LITERAL true)
 		)
 		(IF_STMT
-						(PARENTHESES 
+						(PARENTHESES
 (NAME lit)
 			)
 			(
@@ -87,8 +89,8 @@
 
 	)
 	(PROC_DECL (NAME Main)
-		(CALL_STMT (NAME printint) 
-			(CALL_STMT (NAME Add) 
+		(CALL_STMT (NAME printint)
+			(CALL_STMT (NAME Add)
 				(INT_LITERAL 1)
 				(INT_LITERAL 2)
 			)
