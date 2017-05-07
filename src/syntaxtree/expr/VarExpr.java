@@ -33,9 +33,15 @@ public class VarExpr extends UnaryExpr {
     }
 
     String getName() {
-        if (expr != null) {
-            if (expr instanceof VarExpr) {
-                return ((VarExpr) expr).getName() +"."+ this.name;
+        Expr e = this.expr;
+
+        if (e != null) {
+            if (e instanceof ParenthesesExpr) {
+                e = ((ParenthesesExpr) e).expr;
+            }
+
+            if (e instanceof VarExpr) {
+                return ((VarExpr) e).getName() +"."+ this.name;
             }
 
             return this.name;
