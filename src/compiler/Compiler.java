@@ -53,6 +53,9 @@ public class Compiler {
 		DataOutputStream stream = new DataOutputStream(new FileOutputStream (this.binFilename));
 		stream.write(bytecode);
 		stream.close();
+        //VirtualMachine vm = new VirtualMachine(this.binFilename);
+        //vm.list();
+        //vm.run();
 	}
 	public static void main(String[] args) {
 		Compiler compiler = new Compiler(args[0], args[1], args[2]);

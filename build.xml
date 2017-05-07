@@ -57,12 +57,12 @@
 	<target name="generic-compile" depends="">
 		<javac srcdir="${dir.src-gen}" destdir="${dir.classes}" debug="true" includes="${package-name}/*.java" classpathref="path-cup"/>
 	</target>
-		
+
 	<!-- Generic compile AST-nodes target -->
 	<target name="generic-compile-ast" depends="">
 		<javac srcdir="${dir.src-examples}" destdir="${dir.classes}" debug="true" includes="**/*.java" classpathref="path-cup"/>
 	</target>
-        
+
 
 
 
@@ -100,14 +100,14 @@
 		<jflex file="./grammars/expression-eval.lex" destdir="src-gen"/>
 		<cup srcfile="./grammars/expression-eval.cup" destdir="src-gen" interface="true" />
 	</target>
-	
+
 	<!-- Compile code for example eval -->
 	<target name="compile-example-eval" depends="generate-example-eval">
 		<antcall target="generic-compile">
 			<param name="package-name" value="expression_eval"/>
 		</antcall>
 	</target>
-	
+
 	<!-- Run example eval. -->
 	<target name="run-example-eval" depends="init">
 		<java classname="expression_eval.parser" classpathref="path-run">
@@ -127,7 +127,7 @@
 		<jflex file="./grammars/expression-par.lex" destdir="src-gen"/>
 		<cup srcfile="./grammars/expression-par.cup" destdir="src-gen" interface="true" />
 	</target>
-	
+
 	<!-- Compile code for example par -->
 	<target name="compile-example-par" depends="generate-example-par">
 		<antcall target="generic-compile-ast" />
@@ -135,7 +135,7 @@
 			<param name="package-name" value="expression_par"/>
 		</antcall>
 	</target>
-	
+
 	<!-- Run example par -->
 	<target name="run-example-par" depends="init">
 		<java classname="expression_par.parser" classpathref="path-run">
@@ -158,7 +158,7 @@
 
 	<!-- Run compiler on example RunMe -->
 	<target name="compile-runme" depends="init">
-		<java classname="compiler.Compiler" classpathref="path-run">
+		<java classname="compiler.Compiler" classpathref="path-run" fork="true">
 			<arg value="code-examples/RunMe.cmp"/>
 			<arg value="code-examples/RunMe.ast"/>
 			<arg value="code-examples/RunMe.bin"/>
@@ -175,7 +175,7 @@
 
 	<!-- Run vm on example RunMe -->
 	<target name="run-runme" depends="init">
-		<java classname="runtime.VirtualMachine" classpathref="path-run">
+		<java classname="runtime.VirtualMachine" classpathref="path-run" fork="true">
 			<arg value="code-examples/RunMe.bin"/>
 		</java>
 	</target>
