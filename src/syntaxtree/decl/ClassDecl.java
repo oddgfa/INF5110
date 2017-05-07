@@ -2,6 +2,7 @@ package syntaxtree.decl;
 
 import syntaxtree.Decl;
 import syntaxtree.StringUtils;
+import typesystem.TypeChecker;
 import typesystem.TypeError;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -56,5 +57,7 @@ public class ClassDecl extends Decl {
 
             types.put(name, decl.getType());
         }
+
+        TypeChecker.registerType(this.name);
     }
 }

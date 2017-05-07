@@ -162,7 +162,7 @@ public class ProcDecl extends Decl {
             throw new TypeError("Procedure "+ this.name +" should return "+ this.getType() +" but there is no return statement.");
         }
 
-        if (this.returnType != null && !TypeChecker.isPrimitive(this.returnType.get()) && !types.containsKey(this.returnType.get())) {
+        if (this.returnType != null && !TypeChecker.isPrimitive(this.returnType.get()) && !TypeChecker.isRegistered(this.returnType.get())) {
             throw new TypeError("Unknown return type "+ this.returnType.get());
         }
 
