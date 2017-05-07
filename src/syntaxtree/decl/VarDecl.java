@@ -29,6 +29,7 @@ public class VarDecl extends Decl implements TypeAware {
     @Override
     public void typeCheck(Hashtable<String, String> types, Hashtable<String, ProcDecl> procedures) throws TypeError {
         // no need to check
+        types.put(name, getType());
     }
 
 }
