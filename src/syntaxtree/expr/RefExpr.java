@@ -2,9 +2,6 @@ package syntaxtree.expr;
 
 import syntaxtree.StringUtils;
 import java.util.Hashtable;
-import bytecode.CodeFile;
-import bytecode.CodeProcedure;
-import bytecode.CodeStruct;
 
 public class RefExpr extends UnaryExpr {
 
@@ -32,9 +29,6 @@ public class RefExpr extends UnaryExpr {
     @Override
     public void setType(Hashtable<String, String> types) {
         var.setType(types);
-    }
-
-    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs){
     }
 
 }
