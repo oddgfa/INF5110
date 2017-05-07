@@ -25,6 +25,14 @@ public class ProcDecl extends Decl {
         stmts = new LinkedList<Stmt>();
     }
 
+    public ProcDecl(String name, Type type) {
+        super(name);
+        params = new LinkedList<ParamDecl>();
+        decls = new LinkedList<Decl>();
+        stmts = new LinkedList<Stmt>();
+        returnType = type;
+    }
+
     public ProcDecl(String name, List<ParamDecl> params) {
         super(name);
         this.params = params;
