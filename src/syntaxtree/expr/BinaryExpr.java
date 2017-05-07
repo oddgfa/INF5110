@@ -2,9 +2,6 @@ package syntaxtree.expr;
 
 import syntaxtree.Expr;
 import syntaxtree.StringUtils;
-import bytecode.CodeFile;
-import bytecode.CodeProcedure;
-import bytecode.CodeStruct;
 
 public abstract class BinaryExpr extends Expr {
 
@@ -36,7 +33,4 @@ public abstract class BinaryExpr extends Expr {
 
         return sb.toString();
     }
-
-    @Override
-    public void generateCode(CodeFile cf, CodeProcedure cp, CodeStruct cs) {}
 }
