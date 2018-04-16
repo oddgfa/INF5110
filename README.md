@@ -1,26 +1,34 @@
 # Compila17 compiler
+
 ## Contributors
+
 - oddgfa - Odd Gunnar Fatland
 - pavelju - Pavel Jurasek
 - salihasa - Saliha Sajid
 
 ## Usage
+
 Build using `ant build` and run using `ant run`.
 
 <div style="page-break-after: always;"></div>
+
 ## Design
+
 We divided the nodes into three main parts: expressions, statements and declarations. The structure can be seen in the picture below.
 ![AST design][ast]
 
 # Solution methods
+
 For writing the ambiguous grammar, we defined precedences of the operators. We reduced expressions into unary and binary and then binary expressions eventually into Logical Operator Expressions, Arithmetic Operator Expressions and Relational Operator Expressions. The operations were then applied to the input as per precedences.
 
 For writing the unambiguous grammar we declared the operators as Strings. We created an unambiguous set of productions starting from unary expressions to parse an input file such that the operators with highest precedence are applied before others. There were some conflicts in unambiguous grammar but those were resolved by indication of the expression to be parsed first. 
 
 
 <div style="page-break-after: always;"></div>
+
 ## AST from Compila.cmp
-````
+
+```
 (PROGRAM (NAME ComplexAddition)
 	(CLASS_DECL (NAME Complex)
 		(VAR_DECL (TYPE float) (NAME Real))
@@ -124,7 +132,7 @@ For writing the unambiguous grammar we declared the operators as Strings. We cre
 
 	)
 )
-````
+```
 
 [ast]: https://scontent.flcy1-1.fna.fbcdn.net/v/t1.0-9/16998786_10202854026549374_6172743699134968588_n.jpg?oh=f6c5e250667e3a884c631beabfb0c223&oe=59287E53
 
